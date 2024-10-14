@@ -9,12 +9,10 @@ public abstract class Operation {
 
     protected LocalDateTime initDate, finishDate;; // Fecha de la operacion
     protected String description; // Descripcion de la operacion, no de la compra
-    protected String ref;
+    protected String ref; // Referencia de la operacion, Un numero que clasifique la operacion
     protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     
-
-
-    protected Operation(){};// Constructor vacio};
+    protected Operation(){};// Constructor vacio;
 
     public void operation( String initDate, String finishDate,String description, String ref) throws Exception {
         StringBuilder errors = new StringBuilder();
@@ -31,66 +29,58 @@ public abstract class Operation {
 
     }
 
+    //getter
     public LocalDateTime getInitDate() {
         return initDate;
     }
-    public LocalDateTime getPaymentDate() {
-        return paymentDate;
-    }
+
     public LocalDateTime getFinishDate() {
         return finishDate;
     }
-    public LocalDateTime getDeliveryDate() {
-        return deliveryDate;
+
+    public String getDescription() {
+        return description;
     }
-    public String getIdClient() {
-        return idClient;
+
+    public String getRef() {
+        return ref;
     }
-    public String getProductList() {
-        return productList;
-    }
-    public String getIdOperation() {
-        return idOperation;
-    }
-    public String getIdProduct() {
-        return idProduct;
-    }
-    
-    public void setInitDate(LocalDateTime initDate) {
+
+    public int setInitDate(LocalDateTime initDate) {
         this.initDate = initDate;
     }
-    public void setPaymentDate(LocalDateTime paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-    public void setFinishDate(LocalDateTime finishDate) {
+
+    public int setFinishDate(LocalDateTime finishDate) {
         this.finishDate = finishDate;
     }
-    public void setDeliveryDate(LocalDateTime deliveryDate) {
-        this.deliveryDate = deliveryDate;
+
+    public int setDescription(String description) {
+        this.description = description;
     }
-    public void setIdClient(String idClient) {
-        this.idClient = idClient;
+
+    public int setRef(String ref) {
+        this.ref = ref;
     }
-    public void setProductList(String productList) {
-        this.productList = productList;
-    }
-    public void setIdOperation(String idOperation) {
-        this.idOperation = idOperation;
-    }
-    public void setIdProduct(String idProduct) {
-        this.idProduct = idProduct;
-    }
-    
-    }
-    
+
+ 
     //setter
-    
-    
-    
-    
 
 
 
 
+
+
+
+
+
+
+
+    
 
 }
+
+
+
+
+
+
