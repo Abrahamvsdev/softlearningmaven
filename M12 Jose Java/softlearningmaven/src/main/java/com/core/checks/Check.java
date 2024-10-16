@@ -125,7 +125,7 @@ public class Check {
         if (date == null) {
             return -1;  // Código de error para una fecha null
         }
-    
+        
         // matcher
         Matcher matcher = pattern.matcher(date);
         
@@ -146,6 +146,40 @@ public class Check {
         }
     }
 
+
+///////////////
+
+
+    public static int isValidDateComplete(String date) {
+        // Expresión regular para validar el formato de la fecha (dd-MM-yyyy con horas y minutos)
+        
+
+        // es null
+        if(date==null){
+            return -1;
+        }
+        //compila
+        Pattern pattern = Pattern.compile(date);
+
+        // matcher
+        Matcher matcher = pattern.matcher(date);
+
+        if (matcher.matches()) {
+            // si es correcto, formatter pattern
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd-HH:mm:ss");
+            try {
+                // si la fecha es valida, no hay errores
+                LocalDate.parse(date, formatter);
+                return 0;  // si esta bien
+            } catch (DateTimeParseException e) {
+                // Si ocurre un error al intentar parsear la fecha, significa que no es válida
+                return -14;  //formato correcto pero no valida
+            }
+        } else {
+            // Si no coincide con el patrón de formato
+            return -4;  // Código de error para un formato incorrecto
+        }
+    }
 
 
 
@@ -262,8 +296,9 @@ public class Check {
             case -12 -> "El pago está atrasado";
             case -13 -> "El pago está correctamente";
             case -14 -> "Formato correcto pero no válida";
+            case -15 -> "La referencia introducida no es válida, debe ser mayor a 1000";
             default -> "No reconocible";
-        }; //case -12: return;;
-        //case -13: return;
+        }; 
+        
     }
 }
