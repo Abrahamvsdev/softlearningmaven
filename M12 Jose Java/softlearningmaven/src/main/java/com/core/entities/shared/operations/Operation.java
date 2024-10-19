@@ -1,4 +1,4 @@
-package com.core.entities.operations;
+package com.core.entities.shared.operations;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

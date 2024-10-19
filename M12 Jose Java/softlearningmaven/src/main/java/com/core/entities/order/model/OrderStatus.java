@@ -1,4 +1,4 @@
-package com.core.entities.operations;
+package com.core.entities.order.model;
 
 public enum OrderStatus {
     CREATED,

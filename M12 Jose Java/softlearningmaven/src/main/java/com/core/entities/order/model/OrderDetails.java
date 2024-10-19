@@ -1,13 +1,13 @@
-package com.core.entities.operations;
+package com.core.entities.order.model;
 
 public class OrderDetails {
 
     protected String idOrderDetails;
-    protected String amount;
+    protected double amount;
     protected String ref;
     protected String description;
-    protected String discount;
-    protected String subtotal;
+    protected double discount;
+    protected double subtotal;
 
     
     
