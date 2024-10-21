@@ -29,6 +29,8 @@ public class Books extends Product implements Storable {
     public static Books getInstance(String ident, double price,boolean delayPay, double discount, String type, String payMethod, String date, String author, String isbn, String cover, int page, 
         String genre, String editorial, double weight, double height, double width, double length) throws Exception {
         
+        StringBuilder errors = new StringBuilder();
+        int errorCode;
         Books libro1 = new Books();
         try {
             libro1.dim = Dimensions.getInstanceDimensions(weight, height, width, length); 
@@ -36,11 +38,6 @@ public class Books extends Product implements Storable {
             throw new Exception("Error en las dimensiones: " + e.getMessage()); 
         }
         
-        
-        StringBuilder errors = new StringBuilder();
-        int errorCode;
-
-    
         try {
             libro1.product(ident, price, delayPay, discount, type, payMethod);
             

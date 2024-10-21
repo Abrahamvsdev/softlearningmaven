@@ -88,9 +88,11 @@ public class Employee extends Person {
 
     @Override
     public String getDetails() {
-        //hacer futuro superstring con .append preguntar si puedo NO HACE FALTS
-        return "Employee Details: \n" +
-                "Name: " + getName() + "\n" +
+        // Devuelve los detalles del empleado en un block o una cosa asi, 
+        //he hecho esto para que sea mas facil de leer, y para quitar el warning
+        return """
+                Employee Details: 
+                Name: """ + getName() + "\n" +
                 "Surname: " + getSurname() + "\n" +
                 "Email: " + getEmail() + "\n" +
                 "Address: " + getAddress() + "\n" +

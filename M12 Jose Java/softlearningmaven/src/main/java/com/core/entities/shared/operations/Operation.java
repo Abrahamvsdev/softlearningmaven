@@ -28,6 +28,9 @@ public abstract class Operation {
 
         this.setDescription(description);// No se valida porque no tiene restricciones, hacer cositas con los insultos y palabras malsonantes
 
+        if ((errorCode = this.setRef(ref)) != 0) {
+            errors.append(Check.getErrorMessage(errorCode)).append("\n");
+        }
         
         if (errors.length() > 0) {
             throw new Exception("No es posible crear la operación: \n" + errors.toString());
@@ -47,10 +50,16 @@ public abstract class Operation {
     public String getDescription() {
         return description;
     }
-
+    
     public int getRef() {
         return ref;
     }
+
+
+
+
+
+    //setter
 
     public int setInitDate(String initDate) {
         int errorCode = Check.isValidDateComplete(initDate);
@@ -74,24 +83,16 @@ public abstract class Operation {
     }
 
     public int setRef(int ref) {
-        if(ref<1000){}
-        return -15;
+        if(ref<1000){
+            return -15;
+        }
+        if(ref>1000 && ref<10000){
+            this.ref = ref;
+        }
+        return 0;
     }
 
 
-    //setter
-
-
-
-
-
-
-
-
-
-
-
-    
 
 }
 
