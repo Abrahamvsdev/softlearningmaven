@@ -9,14 +9,14 @@ public class Dimensions {
     protected double width;
     protected double length;
     protected double volume;
-    //protected boolean create = true; est dijo jose que no queria booleanos, que queria una cadena de errores
-    //que si lo que traigo no mejora que lo deje en casa, el objeto stringbuilder mejora pero preguntar bien bien como se usa
+    
     protected Dimensions(){
 
     };
     public static Dimensions getInstanceDimensions(double weight, double height, double width, double length) throws Exception { //CONTRUIRbUILDeXCEPTIONS
         StringBuilder errors = new StringBuilder();
 
+        
         Dimensions d = new Dimensions();
         int errorCode;
 

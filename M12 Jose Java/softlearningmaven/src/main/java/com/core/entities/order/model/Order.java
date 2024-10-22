@@ -2,6 +2,7 @@ package com.core.entities.order.model;
 
 
 
+import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,17 +28,18 @@ public class Order extends Operation implements Storable{
     
 
     protected Order() {
-        this.phoneContact = new HashSet<String>();
-        this.shopCart = new ArrayList<OrderDetails>();
+        this.phoneContact = new HashSet<>();
+        this.shopCart = new ArrayList<>();
         this.status = OrderStatus.CREATED;
     }
 
     //********* ORDER BUILDERS*********/
 
-    public static Order getInstance(String receiverAddress, String receiverPerson, String paymentDate, String deliveryDate, String idClient, Set<String> phoneContact, OrderStatus status, 
+    public static Order getInstance(String receiverAddress, String receiverPerson, String paymentDate, String deliveryDate, String idClient, String phoneContact, OrderStatus status, 
     double weight, double height, double width, double length, 
     String initDate, String finishDate, String description, int ref) throws Exception {
         Order o = new Order();
+        
         StringBuilder errors = new StringBuilder();
         int errorCode;
 
@@ -69,10 +71,6 @@ public class Order extends Operation implements Storable{
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
 
-        if ((errorCode = o.setStatus(status)) != 0) {
-            errors.append(Check.getErrorMessage(errorCode)).append("\n");
-        }
-
         if (errors.length() > 0) {
             throw new Exception("No es posible crear la compra: \n" + errors.toString());
         }
@@ -82,7 +80,7 @@ public class Order extends Operation implements Storable{
 
     //getter
     
-   // String packageDetails = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";
+   
 
     
 
@@ -97,11 +95,10 @@ public class Order extends Operation implements Storable{
 
     
     public ArrayList<OrderDetails> getShopCart() {
-        return shopCart;// preguntar que se retorna aqui, como va esot en general
-    }
+        return shopCart;// preguntar que se retorna aqui, como va esot en general ESTO ESTA PENDIENTE
 
-    public Dimensions getOrderPackage() { //el get seria que retorne string, pero que string? llamo a las funciones para que la pinten?
-        return orderPackage;
+    public Dimensions getOrderPackage() { //el get seria que retorne string. con la funcion .strcat añadir a una variable cositas
+        return this.orderPackage;
     }
 
     
@@ -131,8 +128,8 @@ public class Order extends Operation implements Storable{
         return this.phoneContact;// mirar como se añade cosas al set
     }
     
-    public OrderStatus getStatus() {
-        return this.status; //preguntar si esto deberia ser privado, 
+    private OrderStatus getStatus() {
+        return this.status; //lo pongo provado, luego ya veremos
     }
     
     
@@ -182,43 +179,46 @@ public class Order extends Operation implements Storable{
         return errorIdClient;
     }
 
-    public int setPhoneContact(Set<String> phoneContact) {
-        this.phoneContact = phoneContact;// mirar como se setean cosas al set
+    public int setPhoneContact(String p) {
+        int errorPhoneContact = Check.checkMobilePhone(p);
+        if (errorPhoneContact == 0) {
+            phoneContact.add(p);// el propio metodo set los separa automaticamente
+        }
+        return errorPhoneContact;
     }
 
-    public int setShopCart(ArrayList<OrderDetails> shopCart) {
-        this.shopCart = shopCart; //esto deberia ser privado? y mirar como añadir cositas
-    }
+    
 
     public int setOrderPackage(Dimensions orderPackage) {
 
-       // Package myPackage = new Package(); una idea, quizas podria tratarlo como objeto, pero no se si es lo correcto
-
+       //NO OBJETO
+        String packageDetails = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";
         // Dividimos el string por comas
         String[] details = packageDetails.split(",");
 
         // Recorremos cada parte del string y usamos un switch para asignar con los setters
+        //el getinstace tiene que crear un order package
         for (String detail : details) {
             String[] keyValue = detail.split(":");
 
             switch (keyValue[0]) {
                 case "h":
-                    myPackage.setH(Double.parseDouble(keyValue[1]));
+                Dimension.orderPackage.setD(Double.parseDouble(keyValue[1]));
                     break;
                 case "w":
-                    myPackage.setW(Double.parseDouble(keyValue[1]));
+                orderPackage.setW(Double.parseDouble(keyValue[1]));
                     break;
                 case "W":
-                    myPackage.setBigW(Double.parseDouble(keyValue[1]));
+                orderPackage.setBigW(Double.parseDouble(keyValue[1]));
                     break;
                 case "f":
-                    myPackage.setF(Boolean.parseBoolean(keyValue[1]));
+                orderPackage.setF(Boolean.parseBoolean(keyValue[1]));
                     break;
                 case "d":
-                    myPackage.setD(Double.parseDouble(keyValue[1]));
+                orderPackage.setD(Double.parseDouble(keyValue[1]));
                     break;
                 default:
-                    System.out.println("Llave desconocida: " + keyValue[0]);
+                    //System.out.println("Llave desconocida: " + keyValue[0]);
             }
         }//acabar de implementar
 
@@ -226,9 +226,7 @@ public class Order extends Operation implements Storable{
         this.orderPackage = orderPackage;
     }
 
-    public int setStatus(OrderStatus status) {
-        this.status = status;
-    }
+
 
 
 

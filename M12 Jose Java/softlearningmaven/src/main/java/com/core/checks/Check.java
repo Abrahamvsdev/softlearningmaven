@@ -276,6 +276,20 @@ public class Check {
 
         return 0;
     }
+
+    public static int checkMobilePhone(String n){
+        //esta funcion comprueba si el string es un numero valido de 9 cifras
+        if (Check.isNull(n) == 0) {
+            if (n.length() != 9) {
+                return -17;
+            }
+        }
+        return 0;
+    }
+
+
+
+
     
     
     public static String getErrorMessage(int  e){
@@ -297,6 +311,8 @@ public class Check {
             case -13 -> "El pago está correctamente";
             case -14 -> "Formato correcto pero no válida";
             case -15 -> "La referencia introducida no es válida, debe ser mayor a 1000";
+            case -16 -> "La referencia introducida no es válida, debe ser menor a 10000";
+            case -17 -> "el numero de teléfono debe ser un numero valido de 9 cifras";
             default -> "No reconocible";
         }; 
         
