@@ -1,7 +1,7 @@
 package com.core.entities.order.model;
 
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -97,10 +97,10 @@ public class Order extends Operation implements Storable{
 
     
     public ArrayList<OrderDetails> getShopCart() {
-        return shopCart;// preguntar que se retorna aqui
+        return shopCart;// preguntar que se retorna aqui, como va esot en general
     }
 
-    public Dimensions getOrderPackage() { //el get seria que retorne string
+    public Dimensions getOrderPackage() { //el get seria que retorne string, pero que string? llamo a las funciones para que la pinten?
         return orderPackage;
     }
 
@@ -111,27 +111,28 @@ public class Order extends Operation implements Storable{
     }
     
     public String getReceiverPerson() {
-        return receiverPerson;
+        return this.receiverPerson;
     }
     
     public LocalDateTime getPaymentDate() {
-        return paymentDate;
+        return this.paymentDate;
     }
     
     public LocalDateTime getDeliveryDate() {
-        return deliveryDate;
+        return this.deliveryDate;
     }
     
     public String getIdClient() {
-        return idClient;
+        return this.idClient;
     }
     
     public Set<String> getPhoneContact() {
-        return phoneContact;
+
+        return this.phoneContact;// mirar como se añade cosas al set
     }
     
     public OrderStatus getStatus() {
-        return status;
+        return this.status; //preguntar si esto deberia ser privado, 
     }
     
     
@@ -182,14 +183,46 @@ public class Order extends Operation implements Storable{
     }
 
     public int setPhoneContact(Set<String> phoneContact) {
-        this.phoneContact = phoneContact;
+        this.phoneContact = phoneContact;// mirar como se setean cosas al set
     }
 
     public int setShopCart(ArrayList<OrderDetails> shopCart) {
-        this.shopCart = shopCart;
+        this.shopCart = shopCart; //esto deberia ser privado? y mirar como añadir cositas
     }
 
     public int setOrderPackage(Dimensions orderPackage) {
+
+       // Package myPackage = new Package(); una idea, quizas podria tratarlo como objeto, pero no se si es lo correcto
+
+        // Dividimos el string por comas
+        String[] details = packageDetails.split(",");
+
+        // Recorremos cada parte del string y usamos un switch para asignar con los setters
+        for (String detail : details) {
+            String[] keyValue = detail.split(":");
+
+            switch (keyValue[0]) {
+                case "h":
+                    myPackage.setH(Double.parseDouble(keyValue[1]));
+                    break;
+                case "w":
+                    myPackage.setW(Double.parseDouble(keyValue[1]));
+                    break;
+                case "W":
+                    myPackage.setBigW(Double.parseDouble(keyValue[1]));
+                    break;
+                case "f":
+                    myPackage.setF(Boolean.parseBoolean(keyValue[1]));
+                    break;
+                case "d":
+                    myPackage.setD(Double.parseDouble(keyValue[1]));
+                    break;
+                default:
+                    System.out.println("Llave desconocida: " + keyValue[0]);
+            }
+        }//acabar de implementar
+
+
         this.orderPackage = orderPackage;
     }
 
