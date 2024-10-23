@@ -28,7 +28,7 @@ public class Order extends Operation implements Storable{
     
 
     protected Order() {
-        this.phoneContact = new HashSet<>();
+        this.phoneContact = new HashSet<>(); //esto si se puede porque es propio de java
         this.shopCart = new ArrayList<>();
         this.status = OrderStatus.CREATED;
     }
@@ -80,7 +80,7 @@ public class Order extends Operation implements Storable{
 
     //getter
     
-   
+
 
     
 
@@ -95,8 +95,8 @@ public class Order extends Operation implements Storable{
 
     
     public ArrayList<OrderDetails> getShopCart() {
-        return shopCart;// preguntar que se retorna aqui, como va esot en general ESTO ESTA PENDIENTE
-
+        return this.shopCart;// preguntar que se retorna aqui, como va esot en general ESTO ESTA PENDIENTE
+    }
     public Dimensions getOrderPackage() { //el get seria que retorne string. con la funcion .strcat añadir a una variable cositas
         return this.orderPackage;
     }
@@ -189,9 +189,15 @@ public class Order extends Operation implements Storable{
 
     
 
-    public int setOrderPackage(Dimensions orderPackage) {
+    public void setOrderPackage(String orderPackage) {
 
-       //NO OBJETO
+    double weight;
+    double height;
+    double width;
+    double length;
+    boolean fragile;
+
+       //SI ES UN OBJETO, PERO ESTA DENTRO DE DIMENSION
         String packageDetails = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";
         // Dividimos el string por comas
         String[] details = packageDetails.split(",");
@@ -203,10 +209,10 @@ public class Order extends Operation implements Storable{
 
             switch (keyValue[0]) {
                 case "h":
-                Dimension.orderPackage.setD(Double.parseDouble(keyValue[1]));
+                height=(Double.parseDouble(keyValue[1])); //se setea así
                     break;
                 case "w":
-                orderPackage.setW(Double.parseDouble(keyValue[1]));
+                this.orderPackage.set(Double.parseDouble(keyValue[1]));
                     break;
                 case "W":
                 orderPackage.setBigW(Double.parseDouble(keyValue[1]));
@@ -220,10 +226,10 @@ public class Order extends Operation implements Storable{
                 default:
                     //System.out.println("Llave desconocida: " + keyValue[0]);
             }
+            this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, length);
         }//acabar de implementar
 
 
-        this.orderPackage = orderPackage;
     }
 
 
