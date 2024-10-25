@@ -36,7 +36,7 @@ public class Order extends Operation implements Storable{
     //********* ORDER BUILDERS*********/
 
     public static Order getInstance(String receiverAddress, String receiverPerson, String paymentDate, String deliveryDate, String idClient, String phoneContact, OrderStatus status, 
-    double weight, double height, double width, double length, 
+    double weight, double height, double width, boolean fragile, double length, 
     String initDate, String finishDate, String description, int ref) throws Exception {
         Order o = new Order();
         
@@ -50,7 +50,7 @@ public class Order extends Operation implements Storable{
         }
         
         try {
-            o.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, length);
+            o.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
         } catch (Exception e) {
             throw new Exception("Error en las dimensiones: " + e.getMessage());
         }
@@ -191,11 +191,11 @@ public class Order extends Operation implements Storable{
 
     public void setOrderPackage(String orderPackage) {
 
-    double weight;
-    double height;
-    double width;
-    double length;
-    boolean fragile;
+    double weight = 0; //pregutnar si tiene sentido empezar en 0 o en -1 para asi saber si estan mal, sin necesidad de try catch
+    double height = 0;
+    double width = 0;
+    boolean fragile = false;
+    double length = 0;
 
        //SI ES UN OBJETO, PERO ESTA DENTRO DE DIMENSION
         String packageDetails = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";
@@ -208,33 +208,27 @@ public class Order extends Operation implements Storable{
             String[] keyValue = detail.split(":");
 
             switch (keyValue[0]) {
-                case "h":
-                height=(Double.parseDouble(keyValue[1])); //se setea así
-                    break;
-                case "w":
-                this.orderPackage.set(Double.parseDouble(keyValue[1]));
-                    break;
-                case "W":
-                orderPackage.setBigW(Double.parseDouble(keyValue[1]));
-                    break;
-                case "f":
-                orderPackage.setF(Boolean.parseBoolean(keyValue[1]));
-                    break;
-                case "d":
-                orderPackage.setD(Double.parseDouble(keyValue[1]));
-                    break;
-                default:
-                    //System.out.println("Llave desconocida: " + keyValue[0]);
+                case "h" -> height=(Double.parseDouble(keyValue[1])); //se setea así
+                case "w" -> width=(Double.parseDouble(keyValue[1]));
+                case "W" -> weight=(Double.parseDouble(keyValue[1]));
+                case "f" -> fragile=(Boolean.parseBoolean(keyValue[1]));
+                case "d" -> length=(Double.parseDouble(keyValue[1]));
+                default -> {//preguntar como manejar el keyvalue[0] si se han equivocado, tiro excepcion? que tipo? 
+                    //que la pinte toString o que la guarde en e.message?
+                    
             }
-            this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, length);
+            }
+        //System.out.println("Llave desconocida: " + keyValue[0]);
+            try {
+                this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width,fragile, length);
+            } catch (Exception e) {
+                throw new Exception("Error en las dimensiones: " + e.getMessage());
+                //esto no es asi, seria una runtimeexception pero eso no se que es
+            }
         }//acabar de implementar
 
 
     }
-
-
-
-
 
 
     //implementaciones de storable

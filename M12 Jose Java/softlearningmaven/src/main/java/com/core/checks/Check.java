@@ -313,6 +313,7 @@ public class Check {
             case -15 -> "La referencia introducida no es válida, debe ser mayor a 1000";
             case -16 -> "La referencia introducida no es válida, debe ser menor a 10000";
             case -17 -> "el numero de teléfono debe ser un numero valido de 9 cifras";
+            case -18 -> "Por favor, introduce correctamente la fragilidad del paquete";
             default -> "No reconocible";
         }; 
         

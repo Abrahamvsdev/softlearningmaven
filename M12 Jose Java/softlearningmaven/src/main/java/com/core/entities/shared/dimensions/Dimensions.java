@@ -7,13 +7,14 @@ public class Dimensions {
     protected double weight;
     protected double height;
     protected double width;
+    protected boolean fragile;
     protected double length;
     protected double volume;
     
     protected Dimensions(){
 
     };
-    public static Dimensions getInstanceDimensions(double weight, double height, double width, double length) throws Exception { //CONTRUIRbUILDeXCEPTIONS
+    public static Dimensions getInstanceDimensions(double weight, double height, double width, boolean fragile, double length) throws Exception { //CONTRUIRbUILDeXCEPTIONS
         StringBuilder errors = new StringBuilder();
 
         
@@ -60,6 +61,11 @@ public class Dimensions {
         return this.length;
     }
 
+    
+
+
+    
+
     public int setWeight(double weight) {
         int errorWeight = Check.range(weight);
         if (errorWeight == 0) {
@@ -92,11 +98,19 @@ public class Dimensions {
         return errorLength;
     }
 
+    public int setFragile(boolean f) {
+        if(f == true || f == false){
+            this.fragile = f;
+            return 0;
+        }
+        return -18;
+    }
+
     public double getVolume() {
         return this.width * this.height * this.length;
     }
 
-    public String getDetails() {
+    public String getVolumeDetails() {
         return "Height: " + this.getHeight() + " cm\n" +
                 "Weight: " + this.getWeight() + " kg\n" +
                 "Width: " + this.getWidth() + " cm\n" +
