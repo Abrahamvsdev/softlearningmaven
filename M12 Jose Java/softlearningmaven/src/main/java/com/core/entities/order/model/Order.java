@@ -2,15 +2,15 @@ package com.core.entities.order.model;
 
 
 
-import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.core.checks.Check;
-import com.core.entities.shared.operations.Operation;
+import com.core.entities.exceptions.BuildException;
 import com.core.entities.shared.dimensions.Dimensions;
+import com.core.entities.shared.operations.Operation;
 import com.core.entities.shared.storable.Storable;
 
 
@@ -36,7 +36,6 @@ public class Order extends Operation implements Storable{
     //********* ORDER BUILDERS*********/
 
     public static Order getInstance(String receiverAddress, String receiverPerson, String paymentDate, String deliveryDate, String idClient, String phoneContact, OrderStatus status, 
-    double weight, double height, double width, boolean fragile, double length, 
     String initDate, String finishDate, String description, int ref) throws Exception {
         Order o = new Order();
         
@@ -47,12 +46,6 @@ public class Order extends Operation implements Storable{
             o.operation(initDate, finishDate, description, ref);
         } catch (Exception e) {
             throw new Exception("Error en la operacion: " + e.getMessage());
-        }
-        
-        try {
-            o.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
-        } catch (Exception e) {
-            throw new Exception("Error en las dimensiones: " + e.getMessage());
         }
 
         if ((errorCode = o.setReceiverAddress(receiverAddress)) != 0) {
@@ -189,20 +182,23 @@ public class Order extends Operation implements Storable{
 
     
 
-    public void setOrderPackage(String orderPackage) {
+    public void setOrderPackage(String orderPackage) throws BuildException {
 
-    double weight = 0; //pregutnar si tiene sentido empezar en 0 o en -1 para asi saber si estan mal, sin necesidad de try catch
-    double height = 0;
-    double width = 0;
-    boolean fragile = false;
-    double length = 0;
+    if (this.status != OrderStatus.CONFIRMED) {
+        throw new BuildException("El paquete no esta pagado");
+    }else{
+        double weight = 0; //pregutnar si tiene sentido empezar en 0 o en -1 para asi saber si estan mal, sin necesidad de try catch
+        double height = 0;
+        double width = 0;
+        boolean fragile = false;
+        double length = 0;
 
        //SI ES UN OBJETO, PERO ESTA DENTRO DE DIMENSION
         String packageDetails = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";
         // Dividimos el string por comas
         String[] details = packageDetails.split(",");
 
-        // Recorremos cada parte del string y usamos un switch para asignar con los setters
+        // dividimos cada parte del string por los puntos y usamos un switch para asignar con los setters, keyvalue[0] es la letra y keyvalue[1] son los numeros
         //el getinstace tiene que crear un order package
         for (String detail : details) {
             String[] keyValue = detail.split(":");
@@ -213,22 +209,28 @@ public class Order extends Operation implements Storable{
                 case "W" -> weight=(Double.parseDouble(keyValue[1]));
                 case "f" -> fragile=(Boolean.parseBoolean(keyValue[1]));
                 case "d" -> length=(Double.parseDouble(keyValue[1]));
-                default -> {//preguntar como manejar el keyvalue[0] si se han equivocado, tiro excepcion? que tipo? 
-                    //que la pinte toString o que la guarde en e.message?
-                    
+                default -> {
+                    throw new BuildException("Parametro desconocido: " + keyValue[0]);
+                }
             }
-            }
-        //System.out.println("Llave desconocida: " + keyValue[0]);
+            //se prueban las dimensions para ver si se pueden crear, si no, que pete
             try {
                 this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width,fragile, length);
             } catch (Exception e) {
-                throw new Exception("Error en las dimensiones: " + e.getMessage());
-                //esto no es asi, seria una runtimeexception pero eso no se que es
+                throw new BuildException("Error en las dimensiones: " + e.getMessage());
+                
             }
-        }//acabar de implementar
+            this.status = OrderStatus.FORTHCOMMING;
+        }
 
 
     }
+
+
+    }
+    
+
+    
 
 
     //implementaciones de storable
@@ -257,6 +259,11 @@ public class Order extends Operation implements Storable{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'volume'");
     }
+
+	public static Order getInstance() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getInstance'");
+	}
 
     
 }

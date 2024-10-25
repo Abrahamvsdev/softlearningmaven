@@ -3,7 +3,7 @@ package com.core.entities.order.model;
 public enum OrderStatus {
     CREATED,
     CANCELLED,
-    CONFIRMED,
+    CONFIRMED, //aqui esta pagado
     FORTHCOMMING, //PAQUETE PREPARADO
     DELIVERED,
     FINISHED
