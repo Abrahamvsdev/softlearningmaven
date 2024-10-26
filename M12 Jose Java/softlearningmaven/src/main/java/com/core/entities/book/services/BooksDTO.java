@@ -3,14 +3,14 @@ package com.core.entities.book.services;
 public class BooksDTO {
 private final String ident, type, payMethod, date, author, isbn, cover, genre, editorial;
 private final double price, discount, weight, height, width, length,volume;
-private final boolean delayPay;
+private final boolean delayPay,fragile;
 private final int page;
 
 
 
     public BooksDTO(String ident,double price ,boolean delayPay,double discount, String type, String payMethod, String date,
                 String author, String isbn, String cover, int page, 
-                String genre, String editorial, double weight, double height, double width, double length, double volume) {
+                String genre, String editorial, double weight, double height, double width, boolean fragile, double length, double volume) {
 
                     this.ident = ident;
                     this.price = price;
@@ -28,6 +28,7 @@ private final int page;
                     this.weight = weight;
                     this.height = height;
                     this.width = width;
+                    this.fragile = fragile;
                     this.length = length;
                     this.volume = volume;
                 }
@@ -81,6 +82,10 @@ private final int page;
     }
     public int getPage() {
         return page;
+    }
+
+    public boolean getFragile() {
+        return fragile;
     }
     public double getVolume() {
         return volume;

@@ -20,6 +20,7 @@ public class BooksMapper {
                                 bdto.getWeight(),
                                 bdto.getHeight(),
                                 bdto.getWidth(),
+                                bdto.getFragile(),
                                 bdto.getLength());
     }
 
@@ -43,6 +44,7 @@ public class BooksMapper {
                                 b.getWeight(),
                                 b.getHeight(),
                                 b.getWidth(),
+                                b.getFragile(),
                                 b.getLength(),
                                 b.getVolume()
                                 );

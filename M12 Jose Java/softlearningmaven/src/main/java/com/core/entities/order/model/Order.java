@@ -2,6 +2,7 @@ package com.core.entities.order.model;
 
 
 
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,11 +12,12 @@ import com.core.checks.Check;
 import com.core.entities.exceptions.BuildException;
 import com.core.entities.shared.dimensions.Dimensions;
 import com.core.entities.shared.operations.Operation;
-import com.core.entities.shared.storable.Storable;
 
 
 
-public class Order extends Operation implements Storable{
+
+
+public class Order extends Operation{
     
     
     protected String receiverAddress, receiverPerson;
@@ -35,8 +37,8 @@ public class Order extends Operation implements Storable{
 
     //********* ORDER BUILDERS*********/
 
-    public static Order getInstance(String receiverAddress, String receiverPerson, String paymentDate, String deliveryDate, String idClient, String phoneContact, OrderStatus status, 
-    String initDate, String finishDate, String description, int ref) throws Exception {
+    public static Order getInstance(String receiverAddress, String receiverPerson, String paymentDate, String deliveryDate, String idClient, String phoneContact, String shopCart, 
+    String initDate, String finishDate, String description, int ref, String orderPackage) throws Exception {
         Order o = new Order();
         
         StringBuilder errors = new StringBuilder();
@@ -64,6 +66,20 @@ public class Order extends Operation implements Storable{
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
 
+        if ((errorCode = o.setPaymentDate(paymentDate)) != 0) {
+            errors.append(Check.getErrorMessage(errorCode)).append("\n");
+        }
+
+        if ((errorCode = o.setDeliveryDate(deliveryDate)) != 0) {
+            errors.append(Check.getErrorMessage(errorCode)).append("\n");
+        }
+
+        if ((errorCode = o.setOrderPackage(orderPackage)) != 0) {
+            errors.append(Check.getErrorMessage(errorCode)).append("\n");
+        }
+
+
+
         if (errors.length() > 0) {
             throw new Exception("No es posible crear la compra: \n" + errors.toString());
         }
@@ -73,31 +89,29 @@ public class Order extends Operation implements Storable{
 
     //getter
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
     
-
-
-
-
-
-
-
-
-
-
     
-    public ArrayList<OrderDetails> getShopCart() {
-        return this.shopCart;// preguntar que se retorna aqui, como va esot en general ESTO ESTA PENDIENTE
-    }
-    public Dimensions getOrderPackage() { //el get seria que retorne string. con la funcion .strcat añadir a una variable cositas
-        return this.orderPackage;
-    }
-
+    // public ArrayList<OrderDetails> getShopCart() {
+        //     return this.shopCart;// preguntar que se retorna aqui, como va esot en general ESTO ESTA PENDIENTE
+    // }
     
     
-    public String getReceiverAddres() {
-        return this.receiverAddress;
+    
+    
+    public String getReceiverAddress() {
+        return receiverAddress;
     }
     
     public String getReceiverPerson() {
@@ -120,6 +134,10 @@ public class Order extends Operation implements Storable{
 
         return this.phoneContact;// mirar como se añade cosas al set
     }
+
+    public Dimensions getOrderPackage() {
+        return this.orderPackage;
+    }
     
     private OrderStatus getStatus() {
         return this.status; //lo pongo provado, luego ya veremos
@@ -131,11 +149,13 @@ public class Order extends Operation implements Storable{
 
 
 
+
     public int setReceiverAddress(String receiverAddress) {
         
         int errorReceiverAddress = Check.minMaxLength(receiverAddress);
         if (errorReceiverAddress == 0) {
             this.receiverAddress = receiverAddress;
+            
         }
         return errorReceiverAddress;
     }
@@ -152,6 +172,7 @@ public class Order extends Operation implements Storable{
         int errorPaymentDate = Check.isValidDateComplete(paymentDate);
         if (errorPaymentDate == 0) {
             this.paymentDate = LocalDateTime.parse(paymentDate, this.formatter);
+            this.status = OrderStatus.CONFIRMED;
         }
         return errorPaymentDate;
     }
@@ -160,6 +181,7 @@ public class Order extends Operation implements Storable{
         int errorDeliveryDate = Check.isValidDateComplete(deliveryDate);
         if (errorDeliveryDate == 0) {
             this.deliveryDate = LocalDateTime.parse(deliveryDate, this.formatter);
+            this.status = OrderStatus.DELIVERED;
         }
         return errorDeliveryDate;
     }
@@ -182,21 +204,20 @@ public class Order extends Operation implements Storable{
 
     
 
-    public void setOrderPackage(String orderPackage) throws BuildException {
-
-    if (this.status != OrderStatus.CONFIRMED) {
-        throw new BuildException("El paquete no esta pagado");
-    }else{
-        double weight = 0; //pregutnar si tiene sentido empezar en 0 o en -1 para asi saber si estan mal, sin necesidad de try catch
+    public int setOrderPackage(String oP) throws BuildException {
+        
+    
+        double weight = 0;
         double height = 0;
         double width = 0;
         boolean fragile = false;
         double length = 0;
 
-       //SI ES UN OBJETO, PERO ESTA DENTRO DE DIMENSION
-        String packageDetails = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";
+
+        // ejemploString packageDetails = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";
+
         // Dividimos el string por comas
-        String[] details = packageDetails.split(",");
+        String[] details = oP.split(",");
 
         // dividimos cada parte del string por los puntos y usamos un switch para asignar con los setters, keyvalue[0] es la letra y keyvalue[1] son los numeros
         //el getinstace tiene que crear un order package
@@ -215,55 +236,43 @@ public class Order extends Operation implements Storable{
             }
             //se prueban las dimensions para ver si se pueden crear, si no, que pete
             try {
-                this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width,fragile, length);
-            } catch (Exception e) {
+                this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
+            } catch (BuildException e) {
                 throw new BuildException("Error en las dimensiones: " + e.getMessage());
                 
             }
             this.status = OrderStatus.FORTHCOMMING;
         }
+        
+        return 0;
+        
+    }
 
-
+    public String getOrderDetails() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Order Details: \n");
+        sb.append("Receiver Address: ").append(this.receiverAddress).append("\n");
+        sb.append("Receiver Person: ").append(this.receiverPerson).append("\n");
+        sb.append("Payment Date: ").append(this.paymentDate).append("\n");
+        sb.append("Delivery Date: ").append(this.deliveryDate).append("\n");
+        sb.append("ID Client: ").append(this.idClient).append("\n");
+        sb.append("Phone Contact: ").append(this.phoneContact).append("\n");
+        sb.append("Shop Cart: ").append(this.shopCart).append("\n");
+        sb.append("Order Package: ").append(this.orderPackage.getVolumeDetails()).append("\n");
+        sb.append("Status: ").append(this.status).append("\n");
+        return sb.toString();
     }
 
 
-    }
+
+}
+    
     
 
     
 
 
     //implementaciones de storable
+    //borradas las implementaciones de storable, ya que no se usan en ningun momento, ya dirá jose cuando usarlas
 
-    @Override
-    public boolean isFragile() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isFragile'");
-    }
 
-    @Override
-    public boolean isHeavy() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isHeavy'");
-    }
-
-    @Override
-    public boolean isFlexible() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isFlexible'");
-    }
-    
-    
-    @Override
-    public double volume() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'volume'");
-    }
-
-	public static Order getInstance() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getInstance'");
-	}
-
-    
-}

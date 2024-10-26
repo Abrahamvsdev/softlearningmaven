@@ -137,8 +137,6 @@ public abstract class Person {
 
     
     public String getDetails() {
-        //crear superstring con .append para eficiencia, pero primero asegurar que no es nulo NO HACE FALTA
-
         return "Name: " + name + ", Surname: " + surname + ", Email: " + email + ", Address: " + address +
                 ", DNI: " + dni + ", Number: " + number + ", Antiquity: " + antiquity;
     }

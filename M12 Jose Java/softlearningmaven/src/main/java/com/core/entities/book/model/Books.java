@@ -27,13 +27,13 @@ public class Books extends Product implements Storable {
     }
     
     public static Books getInstance(String ident, double price,boolean delayPay, double discount, String type, String payMethod, String date, String author, String isbn, String cover, int page, 
-        String genre, String editorial, double weight, double height, double width, double length) throws Exception {
+        String genre, String editorial, double weight, double height, double width, boolean fragile, double length) throws Exception {
         
         StringBuilder errors = new StringBuilder();
         int errorCode;
         Books libro1 = new Books();
         try {
-            libro1.dim = Dimensions.getInstanceDimensions(weight, height, width, length); 
+            libro1.dim = Dimensions.getInstanceDimensions(weight, height, width, fragile, length); 
         } catch (Exception e) {
             throw new Exception("Error en las dimensiones: " + e.getMessage()); 
         }
@@ -124,12 +124,17 @@ public class Books extends Product implements Storable {
         return dim.getWidth();
     }
     
+    public boolean getFragile() {
+        return this.fragile;
+    }
+
     public double getLength() {
         return dim.getLength();
     }
     public double getVolume() {
         return dim.getLength() * dim.getWidth() * dim.getHeight();
     }
+
 
     
 
@@ -204,16 +209,13 @@ public class Books extends Product implements Storable {
         return errorEditorial;
     }
 
+    
+
     public void setDim(Dimensions dim) {
         this.dim = dim;
     }
     
     
-
-    @Override
-    public boolean isFragile() {
-        return this.fragile;
-    }
 
     
     @Override
@@ -246,7 +248,5 @@ public class Books extends Product implements Storable {
         return this.dim.getWeight() > 1.0 ? true:false; //si pesa mas de 1kg
     }
 
-    public DateTimeFormatter getFormatter() {
-        return formatter;
-    }
+    
 }

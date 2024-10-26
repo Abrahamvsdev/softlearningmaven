@@ -1,4 +1,3 @@
-import com.core.entities.exceptions.BuildException;
 import com.core.entities.order.model.Order;
 
 public class TestOrder {
@@ -12,10 +11,15 @@ public class TestOrder {
         //testear la clase order getInstance
         
         Order o;
+        //String orderPackage = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";
         try {
-            o = Order.getInstance(receiverAddress, receiverPerson, paymentDate, deliveryDate, idClient, phoneContact, status, weight, height, width, fragile, length, initDate, finishDate, description, ref);
+            o = Order.getInstance("calle 123", "receiverPerson", "2024/10/25-00:00:00", "2025/05/26-00:00:00", "123456789", "687687687", "kjasd", "2025/05/26-00:00:00", "2025/05/26-00:00:00", "description", 1111, "h:202.20,w:202.20,W:202.20,f:true,d:202.20");
+            
+            //o.setOrderPackage(orderPackage);
+            System.out.println(o.getOrderDetails());
+
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e.getMessage());
             o=null;
         }
 

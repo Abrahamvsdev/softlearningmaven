@@ -1,6 +1,7 @@
 // Version: 1.0
 package com.core.entities.shared.dimensions; 
 import com.core.checks.Check;
+import com.core.entities.exceptions.BuildException;
 
 
 public class Dimensions {
@@ -14,7 +15,7 @@ public class Dimensions {
     protected Dimensions(){
 
     };
-    public static Dimensions getInstanceDimensions(double weight, double height, double width, boolean fragile, double length) throws Exception { //CONTRUIRbUILDeXCEPTIONS
+    public static Dimensions getInstanceDimensions(double weight, double height, double width, boolean fragile, double length) throws BuildException{ 
         StringBuilder errors = new StringBuilder();
 
         
@@ -33,6 +34,9 @@ public class Dimensions {
         if ((errorCode = d.setWidth(width)) != 0) {
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
+        if ((errorCode = d.setFragile(fragile)) != 0) {
+            errors.append(Check.getErrorMessage(errorCode)).append("\n");
+        }
 
         if ((errorCode = d.setLength(length)) != 0) {
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
@@ -40,7 +44,7 @@ public class Dimensions {
 
         if (errors.length() > 0) {
             
-            throw new Exception("Not possible to create the dimensions: \n" + errors.toString());
+            throw new BuildException("Not possible to create the dimensions: \n" + errors.toString());
         }
         return d;
     }
@@ -57,10 +61,26 @@ public class Dimensions {
         return this.width;
     }
 
+    public boolean getFragile() {
+        return this.fragile;
+    }
+
     public double getLength() {
         return this.length;
     }
+    
+    public double getVolume() {
+        return this.width * this.height * this.length;
+    }
 
+    public String getVolumeDetails() {
+        return "\n"+ "Height: " + this.getHeight() + " cm\n" +
+                "Weight: " + this.getWeight() + " kg\n" +
+                "Width: " + this.getWidth() + " cm\n" +
+                "Fragile: " + this.getFragile() + "\n" +
+                "Length: " + this.getLength() + " cm\n" +
+                "Volume: " + this.getVolume() + " cubic cm";
+    }
     
 
 
@@ -106,15 +126,4 @@ public class Dimensions {
         return -18;
     }
 
-    public double getVolume() {
-        return this.width * this.height * this.length;
-    }
-
-    public String getVolumeDetails() {
-        return "Height: " + this.getHeight() + " cm\n" +
-                "Weight: " + this.getWeight() + " kg\n" +
-                "Width: " + this.getWidth() + " cm\n" +
-                "Length: " + this.getLength() + " cm\n" +
-                "Volume: " + this.getVolume() + " cubic cm";
-    }
 }
