@@ -20,7 +20,6 @@ public class TestOrder {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            o=null;
         }
 
 

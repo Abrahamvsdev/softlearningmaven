@@ -62,10 +62,6 @@ public class Order extends Operation{
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
 
-        if ((errorCode = o.setPhoneContact(phoneContact)) != 0) {
-            errors.append(Check.getErrorMessage(errorCode)).append("\n");
-        }
-
         if ((errorCode = o.setPaymentDate(paymentDate)) != 0) {
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
@@ -139,7 +135,7 @@ public class Order extends Operation{
         return this.orderPackage;
     }
     
-    private OrderStatus getStatus() {
+    public OrderStatus getStatus() {
         return this.status; //lo pongo provado, luego ya veremos
     }
     
