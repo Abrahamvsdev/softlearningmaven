@@ -62,6 +62,10 @@ public class Order extends Operation{
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
 
+        if ((errorCode = o.setPhoneContact(phoneContact)) != 0) {
+            errors.append(Check.getErrorMessage(errorCode)).append("\n");
+        }
+
         if ((errorCode = o.setPaymentDate(paymentDate)) != 0) {
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
@@ -237,7 +241,11 @@ public class Order extends Operation{
                 throw new BuildException("Error en las dimensiones: " + e.getMessage());
                 
             }
-            this.status = OrderStatus.FORTHCOMMING;
+            if(this.status == OrderStatus.DELIVERED){
+                return 0;
+            }else{
+                this.status = OrderStatus.FORTHCOMMING;
+            }
         }
         
         return 0;
