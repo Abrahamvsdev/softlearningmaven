@@ -35,7 +35,8 @@ public class Order extends Operation{
         this.status = OrderStatus.CREATED;
     }
 
-    //********* ORDER BUILDERS*********/
+    //********* ORDER BUILDERS*********/ (quiere ceir que hay mas) ademas, hay que setear bien el orden del enum
+    //jose tiene en el get instance pequeño (ref, clientid,startdate,description,addres,nombre,telefono)
 
     public static Order getInstance(String receiverAddress, String receiverPerson, String paymentDate, String deliveryDate, String idClient, String phoneContact, String shopCart, 
     String initDate, String finishDate, String description, int ref, String orderPackage) throws Exception {
@@ -86,6 +87,11 @@ public class Order extends Operation{
 
         return o;
     }
+
+
+
+    //se tienen que crear cuando tengamos el sjhopcart details acabado
+    //crear otro getinstance con todo pero que no pete con etodos que puedan petar por el stado del enum (delivery y finish date)
 
     //getter
     
