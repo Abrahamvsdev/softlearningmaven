@@ -6,3 +6,4 @@ public class Spending extends Operation {
 
 }
 //sera otra entidad, no la desarrollaremos
+// son comandes als proveïdors

@@ -30,12 +30,12 @@ public class Order extends Operation{
     
 
     protected Order() {
-        this.phoneContact = new HashSet<>(); //esto si se puede porque es propio de java
+        this.phoneContact = new HashSet<>(); //preguntar si un telefono lo comparte un matrimonio, ya seria repetido y perderia sentido 
         this.shopCart = new ArrayList<>();
         this.status = OrderStatus.CREATED;
     }
 
-    //********* ORDER BUILDERS*********/ (quiere ceir que hay mas) ademas, hay que setear bien el orden del enum
+    //********* ORDER BUILDERS*********/ (quiere decir que hay mas) ademas, hay que setear bien el orden del enum
     //jose tiene en el get instance pequeño (ref, clientid,startdate,description,addres,nombre,telefono)
 
     public static Order getInstance(String receiverAddress, String receiverPerson, String paymentDate, String deliveryDate, String idClient, String phoneContact, String shopCart, 
@@ -44,6 +44,19 @@ public class Order extends Operation{
         
         StringBuilder errors = new StringBuilder();
         int errorCode;
+
+        /*
+         * private static <T> void validateAndSet(Dimensions d, T value, Function<T, Integer> setter, StringBuilder errors) {
+    int errorCode;
+    if ((errorCode = setter.apply(value)) != 0) {
+        errors.append(Check.getErrorMessage(errorCode)).append("\n");
+    }
+        validateAndSet(d, length, d::setLength, errors);
+
+        probar con esto para dejar de repetir codigo, preguntarle al jose si esto esta bien o me olvido,
+        ademas que si llamado desde fuera funciona igual? es decir, si hago esto en las dimensions cuando
+        tenga que llamar y validar funcionara igual?
+         */
 
         try {
             o.operation(initDate, finishDate, description, ref);
@@ -90,27 +103,14 @@ public class Order extends Operation{
 
 
 
-    //se tienen que crear cuando tengamos el shopcart details acabado
+    
     //crear otro getinstance con todo, pero que no pete con todos que puedan petar por el stado del enum (delivery y finish date)
 
+
     //getter
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-    
-    
+ 
     // public ArrayList<OrderDetails> getShopCart() {
-        //     return this.shopCart;// preguntar que se retorna aqui, como va esot en general ESTO ESTA PENDIENTE
+        //     return this.shopCart;
     // }
     
     
@@ -208,6 +208,9 @@ public class Order extends Operation{
         return errorPhoneContact;
     }
 
+
+
+    // este es el setter de orderpackage 
     public int setOrderPackage(String oP) throws BuildException {
         
         //importante setear los datos a 0, para que se puedan crear 
