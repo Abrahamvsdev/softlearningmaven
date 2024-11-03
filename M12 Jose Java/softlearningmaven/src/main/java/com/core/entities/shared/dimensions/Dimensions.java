@@ -74,7 +74,10 @@ public class Dimensions {
     }
 
     public String getVolumeDetails() {
-        return "\n"+ "Height: " + this.getHeight() + " cm\n" +
+        // es un bloque de texto, como si escribieras en un note pad, se usa para escribir un string largo sin tener que concatenar
+        // preguntar por que no hace falta cerrarlo
+        return """
+                Height: """ + this.getHeight() + " cm\n" +
                 "Weight: " + this.getWeight() + " kg\n" +
                 "Width: " + this.getWidth() + " cm\n" +
                 "Fragile: " + this.getFragile() + "\n" +

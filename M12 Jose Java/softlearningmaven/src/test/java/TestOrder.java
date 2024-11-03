@@ -8,7 +8,7 @@ public class TestOrder {
         // ciudades.add("Valencia");
         // ciudades.add("Sevilla");
 
-        //testear la clase order getInstance
+        
         
         Order o;
         //String orderPackage = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";

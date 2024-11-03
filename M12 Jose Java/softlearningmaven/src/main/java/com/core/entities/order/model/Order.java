@@ -90,8 +90,8 @@ public class Order extends Operation{
 
 
 
-    //se tienen que crear cuando tengamos el sjhopcart details acabado
-    //crear otro getinstance con todo pero que no pete con etodos que puedan petar por el stado del enum (delivery y finish date)
+    //se tienen que crear cuando tengamos el shopcart details acabado
+    //crear otro getinstance con todo, pero que no pete con todos que puedan petar por el stado del enum (delivery y finish date)
 
     //getter
     
@@ -146,7 +146,7 @@ public class Order extends Operation{
     }
     
     public OrderStatus getStatus() {
-        return this.status; //lo pongo provado, luego ya veremos
+        return this.status; 
     }
     
     
@@ -203,16 +203,14 @@ public class Order extends Operation{
     public int setPhoneContact(String p) {
         int errorPhoneContact = Check.checkMobilePhone(p);
         if (errorPhoneContact == 0) {
-            phoneContact.add(p);// el propio metodo set los separa automaticamente
+            phoneContact.add(p);// el propio metodo set los separa automaticamente, solo tengo que añadirlo
         }
         return errorPhoneContact;
     }
 
-    
-
     public int setOrderPackage(String oP) throws BuildException {
         
-    
+        //importante setear los datos a 0, para que se puedan crear 
         double weight = 0;
         double height = 0;
         double width = 0;
