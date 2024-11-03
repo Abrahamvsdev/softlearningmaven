@@ -53,9 +53,7 @@ public class Order extends Operation{
     }
         validateAndSet(d, length, d::setLength, errors);
 
-        probar con esto para dejar de repetir codigo, preguntarle al jose si esto esta bien o me olvido,
-        ademas que si llamado desde fuera funciona igual? es decir, si hago esto en las dimensions cuando
-        tenga que llamar y validar funcionara igual?
+        probar con esto algunas lineas a ver como funciona para dejar de repetir codigo, esta concretamente es para las dimensions
          */
 
         try {
@@ -201,7 +199,7 @@ public class Order extends Operation{
     }
 
     public int setPhoneContact(String p) {
-        int errorPhoneContact = Check.checkMobilePhone(p);
+        int errorPhoneContact = Check.checkMobilePhone(p); // de momento solo checkeo si tiene 9 digitos, nada mas
         if (errorPhoneContact == 0) {
             phoneContact.add(p);// el propio metodo set los separa automaticamente, solo tengo que añadirlo
         }
