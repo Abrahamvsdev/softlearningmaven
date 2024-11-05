@@ -2,41 +2,45 @@ package com.core.entities.order.model;
 
 import com.core.checks.Check;
 import com.core.entities.exceptions.BuildException;
+import com.core.entities.shared.dimensions.Dimensions;
+import com.core.entities.shared.operations.Operation;
+
 
 public class OrderDetails {
 
-    protected String idOrderDetails;
+    
     protected int amount;
-    protected String ref;
-    protected String description;
+    protected String detailRef;
+    protected double price;
     protected double discount;
+
+
     protected double subtotal;
 
     // constructor vacio
     protected OrderDetails() {
     }
 
-    
-    public static OrderDetails getInstance(String idOrderDetails, int amount, String ref, String description, double discount, double subtotal) throws BuildException { 
+    //string ref, int amount, double price, double discount, asi los tiene jode
+
+    public static OrderDetails getInstance( int amount, String detailRef,double price, double discount) throws BuildException { 
         
 
         OrderDetails od = new OrderDetails();
         StringBuilder errors = new StringBuilder();
         int errorCode;
 
-        if((errorCode=od.setIdOrderDetails(idOrderDetails))!=0){
-            errors.append(Check.getErrorMessage(errorCode)).append("\n");
-        }
+        
 
         if((errorCode=od.setAmount(amount))!=0){
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
         
-        if((errorCode=od.setRef(ref))!=0){
+        if((errorCode=od.setDetailRef(detailRef))!=0){
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
         
-        if((errorCode=od.setDescription(description))!=0){
+        if((errorCode=od.setPrice(price))!=0){
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
         
@@ -44,9 +48,7 @@ public class OrderDetails {
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
         
-        if((errorCode=od.setSubtotal(subtotal))!=0){
-            errors.append(Check.getErrorMessage(errorCode)).append("\n");
-        }
+        
         
         if(errors.length() > 0) {
             throw new BuildException(errors.toString());
@@ -57,29 +59,35 @@ public class OrderDetails {
 
     
     // getters
-    public String getIdOrderDetails() {
-        return idOrderDetails;
-    }
+    
 
     public int getAmount() {
+        int errorAmount = Check.range(amount);
+        if(errorAmount!=0){
+            return -20;
+        }
         return amount;
     }
 
-    public String getRef() {
-        return ref;
+    try{
+        public String getdetailRef() {
+            if(detailRef){
+                return detailRef;
+            }else{
+                return -21;
+            }
+        }
+
     }
 
-    public String getDescription() {
-        return description;
+    public double getPrice(){
+        return price;
     }
 
     public double getDiscount() {
         return discount;
     }
 
-    public double getSubtotal() {
-        return subtotal;
-    }
 
 
 
@@ -91,38 +99,22 @@ public class OrderDetails {
     
     
     // setters
-    public int setIdOrderDetails(String idOrderDetails) {
-        int errorIdOrderDetails = Check.(idOrderDetails);
-        //aqui tendre que comprobar si el id ya existe con un getOrderId o algo y comprarlo si 
-        this.idOrderDetails = idOrderDetails;
-    }
 
     public int setAmount(int amount) {
+        if()
         this.amount = amount;
     }
 
-    public int setRef(String ref) {
-        this.ref = ref;
+    public int setDetailRef(String detailRef) {
+        this.detailRef = detailRef;
     }
 
-    public int setDescription(String description) {
-        this.description = description;
+    public int setPrice(double price) {
+        this.price = price;
     }
 
     public int setDiscount(double discount) {
         this.discount = discount;
     }
 
-    public int setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    
-
-
-
-
-
-
-
-    
+}

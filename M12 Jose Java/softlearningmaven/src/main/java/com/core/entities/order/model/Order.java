@@ -37,6 +37,9 @@ public class Order extends Operation{
 
     //********* ORDER BUILDERS*********/ (quiere decir que hay mas) ademas, hay que setear bien el orden del enum
     //jose tiene en el get instance pequeño (ref, clientid,startdate,description,addres,nombre,telefono)
+    //la ref del order es els codigo de factura y la ref del orderdetails es el isbn por ejemplo
+    
+    //el foreach de buscar el equals ref podemos hacerlo una funcion
 
     public static Order getInstance(String receiverAddress, String receiverPerson, String paymentDate, String deliveryDate, String idClient, String phoneContact, String shopCart, 
     String initDate, String finishDate, String description, int ref, String orderPackage) throws Exception {
@@ -111,7 +114,7 @@ public class Order extends Operation{
         //     return this.shopCart;
     // }
     
-    
+    //el get subtotal es amout*price
     
     
     public String getReceiverAddress() {

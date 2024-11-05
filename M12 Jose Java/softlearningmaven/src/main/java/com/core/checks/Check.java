@@ -287,8 +287,6 @@ public class Check {
         return 0;
     }
 
-    public static int checkId
-
 
 
 
@@ -316,6 +314,9 @@ public class Check {
             case -16 -> "La referencia introducida no es válida, debe ser menor a 10000";
             case -17 -> "el numero de teléfono debe ser un numero valido de 9 cifras";
             case -18 -> "Por favor, introduce correctamente la fragilidad del paquete";
+            case -19 -> "el Id del Orden no ha sido seteado";
+            case -20 -> "La cantidad (amount) no es menor a 0";
+            case -21 -> "No hay detalle";
             default -> "No reconocible";
         }; 
         
