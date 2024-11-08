@@ -17,11 +17,11 @@ public class OrderDetails {
 
     protected double subtotal;
 
-    // constructor vacio
+    // constructor vacio voy a porbar a comentarlo parece que no hace falta
     protected OrderDetails() {
     }
 
-    //string ref, int amount, double price, double discount, asi los tiene jode
+    //string ref, int amount, double price, double discount, asi los tiene jose
 
     public static OrderDetails getInstance( int amount, String detailRef,double price, double discount) throws BuildException { 
         
@@ -69,15 +69,21 @@ public class OrderDetails {
         return amount;
     }
 
-    try{
-        public String getdetailRef() {
-            if(detailRef){
-                return detailRef;
-            }else{
-                return -21;
+    public int getDetailRef()throws BuildException{
+        try {
+            errorDetailRef= Check.minMaxLength(detailRef)
+            if(errorDetailRef==0){
+                return 0;
             }
+        } catch (Exception e) {
+            if(errorCode!=0){
+                throw new BuildException 
+            }
+        } finally {
+            if(errorDetailRef==0)
         }
-
+    }
+//retornaur un 21
     }
 
     public double getPrice(){

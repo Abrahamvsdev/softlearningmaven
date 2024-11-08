@@ -114,7 +114,10 @@ public class Order extends Operation{
         //     return this.shopCart;
     // }
     
-    //el get subtotal es amout*price
+    public double getSubtotal(){
+    double subtotal=amount*price;
+    return subtotal;
+    }   
     
     
     public String getReceiverAddress() {
