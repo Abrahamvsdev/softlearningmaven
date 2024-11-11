@@ -82,7 +82,7 @@ public class Order extends Operation{
 
         if (errors.length() > 0) {
             
-            o = null;
+            o == null;
             throw new BuildException("No es posible crear la compra: \n" + errors.toString());
         }
         return o;
@@ -181,17 +181,6 @@ public class Order extends Operation{
     public int getNumDetails() {
         return this.shopCart.size();
     }
-
-    public String getDetail(int pos) {
-        if (pos >= 0 && pos < shopCart.size()) {
-            return shopCart.get(pos).toString(); //como se devuelve esto?
-        }
-        return null;
-    }
-    
-
-
-
 
 
     //setter
