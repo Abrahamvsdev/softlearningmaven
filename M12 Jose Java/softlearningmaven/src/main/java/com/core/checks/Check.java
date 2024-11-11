@@ -220,6 +220,18 @@ public class Check {
             }
     }
 
+    //RANGE PARA DESCUENTO
+    public static int rangeDiscount(double e){
+        //esta funcion coprueba si el descuento en double esta correcto, y no puede ser mayor que 50
+        if(e < 0.00) {
+            return -6;
+        } else if(e > 50.00) {
+            return -20;
+        } else {
+            return 0;
+        }
+    }
+
     //RANGE PARA INT
     public static int range(int e){
         //esta funcion coprueba si el int es nulo o positivo
@@ -315,7 +327,7 @@ public class Check {
             case -17 -> "el numero de teléfono debe ser un numero valido de 9 cifras";
             case -18 -> "Por favor, introduce correctamente la fragilidad del paquete";
             case -19 -> "el Id del Orden no ha sido seteado";
-            case -20 -> "La cantidad (amount) no es menor a 0";
+            case -20 -> "El descuento no puede ser mayor al 50% ";
             case -21 -> "No hay detalle";
             default -> "No reconocible";
         }; 

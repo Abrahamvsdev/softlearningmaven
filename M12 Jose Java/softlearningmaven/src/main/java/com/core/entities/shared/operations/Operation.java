@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.core.checks.Check;
+import com.core.entities.exceptions.BuildException;
 
 public abstract class Operation {
 
@@ -14,7 +15,7 @@ public abstract class Operation {
     
     protected Operation(){};// Constructor vacio;
 
-    public void operation( String initDate, String finishDate,String description, int ref) throws Exception {
+    public void operation( String initDate, String finishDate,String description, int ref) throws BuildException {
         StringBuilder errors = new StringBuilder();
         int errorCode;
 
@@ -33,7 +34,7 @@ public abstract class Operation {
         }
         
         if (errors.length() > 0) {
-            throw new Exception("No es posible crear la operación: \n" + errors.toString());
+            throw new BuildException("No es posible crear la operación: \n" + errors.toString());
         }
 
     }
@@ -78,7 +79,7 @@ public abstract class Operation {
     }
 
     public int setDescription(String description) {
-        this.description = description;
+        this.description = description; //preguntar si aqui puedo hacer un optional potrque esta es opcional, lo mismo hay lo mismo no
         return 0;
     }
 
