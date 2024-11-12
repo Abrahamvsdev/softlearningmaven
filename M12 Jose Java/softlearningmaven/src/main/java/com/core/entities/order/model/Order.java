@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.core.checks.Check;
 import com.core.entities.exceptions.BuildException;
+import com.core.entities.exceptions.ServiceException;
 import com.core.entities.shared.dimensions.Dimensions;
 import com.core.entities.shared.operations.Operation;
 
@@ -291,12 +292,14 @@ public class Order extends Operation{
 
     // setters de la clase auxiliar OrderDetarils en el Order
 
-    public int setDetail(int amount, String detailRef, double price, double discount) {
-        OrderDetails detail = new OrderDetails();
-        shopCart.add(detail);
-        //aqui entran dobladitas
-        //meter dentro del construc
-
+    public int setDetail(int amount, String detailRef, double price, double discount) throws ServiceException  {
+        try {
+            OrderDetails detalle = OrderDetails.getInstance(amount, detailRef, price, discount);
+            this.shopCart.add(detalle);
+        } catch (ServiceException e) {
+            throw new ServiceException("Error al crear OrderDetail: " + e.getMessage());
+        }
+        
     }
 
     // detalle por POSICION

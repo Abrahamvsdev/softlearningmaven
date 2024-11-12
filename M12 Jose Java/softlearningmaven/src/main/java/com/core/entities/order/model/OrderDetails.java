@@ -1,7 +1,7 @@
 package com.core.entities.order.model;
 
 import com.core.checks.Check;
-import com.core.entities.exceptions.BuildException;
+import com.core.entities.exceptions.ServiceException;
 
 
 
@@ -22,7 +22,7 @@ public class OrderDetails {
 
     //string ref, int amount, double price, double discount, asi los tiene jose
 
-    public static OrderDetails getInstance( int amount, String detailRef,double price, double discount) throws BuildException { 
+    public static OrderDetails getInstance( int amount, String detailRef,double price, double discount) throws ServiceException { 
         
 
         OrderDetails od = new OrderDetails();
@@ -50,7 +50,7 @@ public class OrderDetails {
         
         
         if(errors.length() > 0) {
-            throw new BuildException(errors.toString());
+            throw new ServiceException(errors.toString());
         }
 
         od.subtotal = od.calculateSubtotal(); //preguntar jose si tiene sentido aqui o en el getter

@@ -305,7 +305,6 @@ public class Check {
     
     
     public static String getErrorMessage(int  e){
-        //esta funcion retorna el mensajito personalizado como a mi me gusta
         return switch (e) {
             case 0->"";
             case -1 -> "No puede ser null";
