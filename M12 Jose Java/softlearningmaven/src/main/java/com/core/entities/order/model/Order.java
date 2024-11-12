@@ -83,7 +83,7 @@ public class Order extends Operation{
 
         if (errors.length() > 0) {
             
-            o == null;
+            o = null;
             throw new BuildException("No es posible crear la compra: \n" + errors.toString());
         }
         return o;
@@ -95,12 +95,13 @@ public class Order extends Operation{
     
     //crear otro getinstance con todos los parametros que quedan por añadir, y que los sume a los que ya tengo en el getinstance si la bandera es true preparado para que lanze buildexception por el stado del enum (delivery y finish date)
     
-    public static Order getCompleteInstance(String receiverAddress, String receiverPerson, String idClient, String phoneContact, 
+    public static Order getInstance(String receiverAddress, String receiverPerson, String idClient, String phoneContact, 
     String initDate, String finishDate, String description, int ref, String paymentDate, String deliveryDate, String orderPackage)
     throws BuildException {
 
     StringBuilder errors = new StringBuilder();
     int errorCode;
+    //Order o = nullk; si descomento esto mato la operacion, probar cambio de logica
 
     // Llamamos a getInstance pasando el StringBuilder errors
     if (o != null) {
@@ -292,14 +293,41 @@ public class Order extends Operation{
 
     // setters de la clase auxiliar OrderDetarils en el Order
 
-    public int setDetail(int amount, String detailRef, double price, double discount) throws ServiceException  {
-        try {
-            OrderDetails detalle = OrderDetails.getInstance(amount, detailRef, price, discount);
-            this.shopCart.add(detalle);
-        } catch (ServiceException e) {
-            throw new ServiceException("Error al crear OrderDetail: " + e.getMessage());
+    public int setDetail(int amount, String detailRef, double price, double discount) throws ServiceException {
+        int errorCode;
+
+        errorCode = Check.range(amount);
+        if (errorCode != 0) {
+            throw new ServiceException("Error en amount: " + Check.getErrorMessage(errorCode));
+        }
+
+        errorCode = Check.isNull(detailRef);
+        if (errorCode != 0) {
+            throw new ServiceException("Error en detailRef: " + Check.getErrorMessage(errorCode));
         }
         
+        
+        
+        errorCode = Check.range(price);
+        if (errorCode != 0) {
+            throw new ServiceException("Error en price: " + Check.getErrorMessage(errorCode));
+        }
+        
+        
+        errorCode = Check.rangeDiscount(discount);
+        if (errorCode != 0) {
+            throw new ServiceException("Error en discount: " + Check.getErrorMessage(errorCode));
+        }
+        
+        try {
+            OrderDetails detalle = OrderDetails.getInstance(amount, detailRef, price, discount);
+            
+            this.shopCart.add(detalle);
+        } catch (ServiceException e) {
+            throw new ServiceException("Error al crear OrderDetails: " + e.getMessage());
+        }
+
+        return errorCode; //no acabado
     }
 
     // detalle por POSICION
@@ -321,51 +349,74 @@ public String getRefDetail(String ref) { //cambiar nombre porque esto liará
 }
 
 //  cantidad por POSICION y meter dentro del constructor
-public int updateDetail(int pos, int amount) {
-    if (pos >= 0 && pos < shopCart.size()) {
-        if(amount < 0){
-            return 
-        }
-        shopCart.get(pos).setAmount(amount);
-        return 
+public int updateDetail(int pos, int amount) throws ServiceException {
+    // Validar posición
+    if (pos < 0 || pos >= shopCart.size()) {
+        throw new ServiceException("Error en pos: Posición inválida");
     }
-    return ; 
+
+    
+    int errorCode = Check.range(amount);
+    if (errorCode != 0) {
+        throw new ServiceException("Error en amount: " + Check.getErrorMessage(errorCode));
+    }
+
+    
+    shopCart.get(pos).setAmount(amount);
+    return errorCode; 
 }
 
 //cantidad por REFERENCIA y meter dentro del constructor
-public int updateDetail(String ref, int amount) {
-    if(amount < 0){
-        return 
+public int updateDetail(String ref, int amount) throws ServiceException {
+    
+    int errorCode = Check.isNull(ref);
+    if (errorCode != 0) {
+        throw new ServiceException("Error en ref: " + Check.getErrorMessage(errorCode));
     }
+
+    
+    errorCode = Check.range(amount);
+    if (errorCode != 0) {
+        throw new ServiceException("Error en amount: " + Check.getErrorMessage(errorCode));
+    }
+    
     for (OrderDetails detail : shopCart) {
         if (detail.getDetailRef().equals(ref)) {
             detail.setAmount(amount);
-            return 
+            return 0; 
         }
     }
-    return 
+    return errorCode; 
 }
 
 
 // detalle por posicion y meter dentro del constructor
-public int deleteDetail(int pos) {
-    if (pos >= 0 && pos < shopCart.size()) {
-        shopCart.remove(pos);
-        return 
+public int deleteDetail(int pos) throws ServiceException {
+    
+    if (pos < 0 || pos >= shopCart.size()) {
+        throw new ServiceException("Error en pos: Posición inválida");
     }
-    return 
+
+    shopCart.remove(pos);
+    return 1;
 }
 
 
 // detalle por referencia y meter dentro del constructor
-public int deleteDetail(String ref) {
+public int deleteDetail(String ref) throws ServiceException {
+    
+    int errorCode = Check.isNull(ref);
+    if (errorCode != 0) {
+        throw new ServiceException("Error en ref: " + Check.getErrorMessage(errorCode));
+    }
+
     for (OrderDetails detalle : shopCart) {
         if (detalle.getDetailRef().equals(ref)) {
             shopCart.remove(detalle);
-            return 
+            return 1; // Éxito
         }
     }
-    return 
+    return errorCode; 
 }
 
 
