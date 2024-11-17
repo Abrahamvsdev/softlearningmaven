@@ -1,7 +1,7 @@
 package com.core.entities.order.services;
 
 import com.core.entities.order.model.Order;
-import com.core.exceptions.BuildException;
+import com.core.entities.exceptions.BuildException;
 
 import java.util.Set;
 
@@ -13,17 +13,14 @@ public class OrderMapper {
                 odto.getReceiverAddress(),
                 odto.getReceiverPerson(),
                 odto.getIdClient(),
-                "", // Pasamos una cadena vacía inicialmente; añadiremos los contactos después
+                odto.getPhoneContact(),
                 odto.getInitDate(),
                 odto.getFinishDate(),
                 odto.getDescription(),
-                odto.getRef(),
-                odto.getPaymentDate(),
-                odto.getDeliveryDate(),
-                odto.getOrderPackage()
+                odto.getRef()
         );
 
-       
+
         Set<String> phoneContacts = odto.getPhoneContact();
         for (String phone : phoneContacts) {
             order.setPhoneContact(phone);

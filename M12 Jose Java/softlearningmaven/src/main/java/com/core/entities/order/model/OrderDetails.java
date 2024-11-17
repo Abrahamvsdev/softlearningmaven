@@ -93,6 +93,7 @@ public class OrderDetails {
     //}
 
     public double getPrice(){
+        
         return price;
     }
 
@@ -145,4 +146,21 @@ public class OrderDetails {
         this.discount = discount;
         return 0;
     }
+
+    //agregar metodo toString
+    public String toString() {
+        return "OrderDetails{" +
+                "amount=" + amount +
+                ", detailRef='" + detailRef + '\'' +
+                ", price=" + price +
+                ", discount=" + discount +
+                ", subtotal=" + subtotal +
+                '}';
+    }
+
+
+
+
+
+
 }

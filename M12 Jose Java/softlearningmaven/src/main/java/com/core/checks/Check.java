@@ -81,7 +81,7 @@ public class Check {
         if(Check.isNull(s)==0){
             
             
-            if(s.length()>10){
+            if(s.length()>15){
                 return -7;
             } else {
                 return 0;

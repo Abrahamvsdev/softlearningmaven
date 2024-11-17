@@ -73,17 +73,39 @@ public class Dimensions {
         return this.width * this.height * this.length;
     }
 
-    public String getVolumeDetails() {
-        // es un bloque de texto, como si escribieras en un note pad, se usa para escribir un string largo sin tener que concatenar
-        // preguntar por que no hace falta cerrarlo
-        return """
-                Height: """ + this.getHeight() + " cm\n" +
+    // public String getVolumeDetails() {
+    //     // es un bloque de texto, como si escribieras en un note pad, se usa para escribir un string largo sin tener que concatenar
+    //     // preguntar por que no hace falta cerrarlo
+    //     return """
+    //             Height: """ + this.getHeight() + " cm\n" +
+    //             "Weight: " + this.getWeight() + " kg\n" +
+    //             "Width: " + this.getWidth() + " cm\n" +
+    //             "Fragile: " + this.getFragile() + "\n" +
+    //             "Length: " + this.getLength() + " cm\n" +
+    //             "Volume: " + this.getVolume() + " cubic cm";
+    // }
+    
+    //agregar un metodo toString
+    public String toString() {
+        return "Height: " + this.getHeight() + " cm\n" +
                 "Weight: " + this.getWeight() + " kg\n" +
                 "Width: " + this.getWidth() + " cm\n" +
                 "Fragile: " + this.getFragile() + "\n" +
                 "Length: " + this.getLength() + " cm\n" +
                 "Volume: " + this.getVolume() + " cubic cm";
     }
+
+    // @Override
+    // public StringBuilder toString() {
+    //     StringBuilder details = new StringBuilder();
+    //     details.append("Height: ").append(this.getHeight()).append(" cm\n")
+    //            .append("Weight: ").append(this.getWeight()).append(" kg\n")
+    //            .append("Width: ").append(this.getWidth()).append(" cm\n")
+    //            .append("Fragile: ").append(this.getFragile()).append("\n")
+    //            .append("Length: ").append(this.getLength()).append(" cm\n")
+    //            .append("Volume: ").append(this.getVolume()).append(" cubic cm");
+    //     return details;
+    // }
     
 
 

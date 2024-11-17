@@ -41,8 +41,15 @@ public class Order extends Operation{
     
     //jose tiene en el get instance pequeño (ref, clientid,startdate,description,addres,nombre,telefono)
     // ESTE ES EL GET INSTANCE PEQUEÑO
-    public static Order getInstance(String receiverAddress, String receiverPerson, String idClient, Set<String> phoneContact, 
-    String initDate, String finishDate, String description, int ref) throws BuildException {
+    public static Order getInstance(
+        String receiverAddress, 
+        String receiverPerson, 
+        String idClient, 
+        Set<String> phoneContact, 
+        String initDate, 
+        String finishDate, 
+        String description, 
+        int ref) throws BuildException {
         Order o = new Order();
         
         StringBuilder errors = new StringBuilder();
@@ -85,8 +92,9 @@ public class Order extends Operation{
 
         if (errors.length() > 0) {
             
-            throw new BuildException("No es posible crear la compra: \n" + errors.toString());
+            throw new BuildException("No es posible crear la compra en el pequeño: \n" + errors.toString());
         }
+        
         return o;
 
     }
@@ -118,7 +126,7 @@ public class Order extends Operation{
                 Order o = null;
                 
                 try {
-                    Order o = getInstance(receiverAddress, receiverPerson, idClient, phoneContact, initDate, finishDate, description, ref);
+                    o = getInstance(receiverAddress, receiverPerson, idClient, phoneContact, initDate, finishDate, description, ref);
                     if (o != null) {
 
 
@@ -135,7 +143,7 @@ public class Order extends Operation{
                         }
 
 
-
+                    
                     //probar las dimensiones
                     try {
                         o.setOrderPackage(orderPackage);
@@ -158,18 +166,12 @@ public class Order extends Operation{
                         errors.append(Check.getErrorMessage(errorCode)).append("\n");
                     }
 
-                    
-                    
                     if (errors.length() > 0) {
-                        
-                        throw new BuildException("No es posible crear la compra: \n" + errors.toString());
+                        throw new BuildException("No es posible crear la compra en el grande: \n" + errors.toString());
                     }
 
-
                 }
-
-                
-                } catch (BuildException e) {
+                    } catch (BuildException e) {
                     errors.append(e.getMessage()).append("\n");
                 }
                 return o;
@@ -215,7 +217,7 @@ public class Order extends Operation{
     
     public Set<String> getPhoneContact() {
 
-        return this.phoneContact;// mirar como se añade cosas al set
+        return this.phoneContact;
     }
 
     public Dimensions getOrderPackage() {
@@ -279,10 +281,10 @@ public class Order extends Operation{
         return errorIdClient;
     }
 
-    public int setPhoneContact(String p) {
-        int errorPhoneContact = Check.checkMobilePhone(p); // de momento solo checkeo si tiene 9 digitos, nada mas
+    public int setPhoneContact(String Phone) {
+        int errorPhoneContact = Check.checkMobilePhone(Phone); // de momento solo checkeo si tiene 9 digitos, nada mas
         if (errorPhoneContact == 0) {
-            phoneContact.add(p);// el propio metodo set los separa automaticamente, solo tengo que añadirlo
+            phoneContact.add(Phone);// el propio metodo set los separa automaticamente, solo tengo que añadirlo en los test
         }
         return errorPhoneContact;
     }
@@ -292,7 +294,7 @@ public class Order extends Operation{
     // este es el setter de orderpackage 
     public int setOrderPackage(String oP) throws BuildException {
         
-        //importante setear los datos a 0, para que se puedan crear 
+        //importante setear los parametros a 0, para que se puedan crear 
         double weight = 0;
         double height = 0;
         double width = 0;
@@ -327,9 +329,9 @@ public class Order extends Operation{
                 throw new BuildException("Error en las dimensiones: " + e.getMessage());
                 
             }
-            if(this.status == OrderStatus.DELIVERED){ // tengo qeu quitar esto para reordenar, lo probe cuando hice el constructor con todo
-                return 0;
-            }else{
+            this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
+            if(this.status == OrderStatus.CONFIRMED){ 
+                
                 this.status = OrderStatus.FORTHCOMMING;
             }
         }
@@ -341,28 +343,31 @@ public class Order extends Operation{
     // setters de la clase auxiliar OrderDetarils en el Order
 
     public int setDetail(int amount, String detailRef, double price, double discount) throws ServiceException {
+    
         
         try {
             OrderDetails detalle = OrderDetails.getInstance(amount, detailRef, price, discount);
+            
             this.shopCart.add(detalle);
             
         } catch (ServiceException e) {
-            throw new ServiceException("Error al crear OrderDetails: " + e.getMessage());
+            throw new ServiceException("Error al crear el detalle: " + e.getMessage());
         }
-        "Detalle añadido:\n" + detalle.toString();
+        // Detalle añadido
         return 0; 
     }
 
         // detalle por POSICION
     public String getPosDetail(int pos) {
         if (pos >= 0 && pos < shopCart.size()) {
-            return shopCart.get(pos).toString();
+            return this.shopCart.get(pos).toString();
         }
         return "No existe el detalle en la posición " + pos;
     }
 
     // detalle por REFERENCIA
     public String getRefDetail(String ref) { //cambiar nombre porque esto liará
+        
         for (OrderDetails detail : shopCart) {
             if (detail.getDetailRef().equals(ref)) {
                 return detail.toString();
@@ -378,15 +383,13 @@ public class Order extends Operation{
             throw new ServiceException("Error en pos: Posición inválida");
         }
 
-        
         int errorCode = Check.range(amount);
         if (errorCode != 0) {
             throw new ServiceException("Error en amount: " + Check.getErrorMessage(errorCode));
         }
 
-        
-        shopCart.get(pos).setAmount(amount);
-        return errorCode; 
+        this.shopCart.get(pos).setAmount(amount);
+        return 0; 
     }
 
     //cantidad por REFERENCIA y meter dentro del constructor
@@ -413,15 +416,15 @@ public class Order extends Operation{
     }
 
 
-    // detalle por posicion y meter dentro del constructor
+    // detalle por posicion 
     public int deleteDetail(int pos) throws ServiceException {
         
         if (pos < 0 || pos >= shopCart.size()) {
             throw new ServiceException("Error en pos: Posición inválida");
         }
 
-        shopCart.remove(pos);
-        return 1;
+        this.shopCart.remove(pos);
+        return 0;
     }
 
 
@@ -435,7 +438,7 @@ public class Order extends Operation{
 
         for (OrderDetails detalle : shopCart) {
             if (detalle.getDetailRef().equals(ref)) {
-                shopCart.remove(detalle);
+                this.shopCart.remove(detalle);
                 return 0;
             }
         }
@@ -453,40 +456,53 @@ public class Order extends Operation{
     }
 
 
-
-
-
-
-    
-    //preguntar jose si opcional en el caso del discount funcionariaen los parametros
     
 
-
+    //metodo para mostrar los detalles de la compra
+    
+    
     public String getOrderDetails() {
-        
+
+        sb.setLength(0); // sb a 0 para que no se repitan ordenes anteriores
         sb.append("Order Details: \n");
         sb.append("Receiver Address: ").append(this.receiverAddress).append("\n");
         sb.append("Receiver Person: ").append(this.receiverPerson).append("\n");
-        sb.append("Payment Date: ").append(this.paymentDate).append("\n");
-        sb.append("Delivery Date: ").append(this.deliveryDate).append("\n");
         sb.append("ID Client: ").append(this.idClient).append("\n");
-        sb.append("Phone Contact: ").append(this.phoneContact).append("\n");
-        sb.append("Shop Cart: ").append(this.shopCart).append("\n");
-        sb.append("Order Package: ").append(this.orderPackage.getVolumeDetails()).append("\n");
-        sb.append("Status: ").append(this.status).append("\n");
+        //los telefonos van aparte
+        sb.append("Init Date: ").append(this.initDate).append("\n");
+        sb.append("Finish Date: ").append(this.finishDate).append("\n");
+        sb.append("Description: ").append(this.description).append("\n");
+        sb.append("Reference: ").append(this.ref).append("\n");
         return sb.toString();
     }
 
+    public String getCompleteOrderDetails() {
 
+        sb.setLength(0); // sb a 0 para que no se repitan ordenes anteriores
+        sb.append("Order Details: \n");
+        sb.append("Receiver Address: ").append(this.receiverAddress).append("\n");
+        sb.append("Receiver Person: ").append(this.receiverPerson).append("\n");
+        sb.append("ID Client: ").append(this.idClient).append("\n");
+        sb.append("Phone Contact: ").append(getPhoneContact()).append("\n");
+        sb.append("Init Date: ").append(this.initDate).append("\n");
+        sb.append("Finish Date: ").append(this.finishDate).append("\n");
+        sb.append("Description: ").append(this.description).append("\n");
+        sb.append("Reference: ").append(this.ref).append("\n");
+        sb.append("Payment Date: ").append(this.paymentDate).append("\n");
+        sb.append("Delivery Date: ").append(this.deliveryDate).append("\n");
+        sb.append("Order Package: ").append(this.getOrderPackage()).append("\n");
+        sb.append("Status: ").append(this.status).append("\n");
+        sb.append("Shop Cart: \n");
+        for (OrderDetails detail : shopCart) {
+            sb.append(detail.toString()).append("\n");
+        }
+        sb.append("Total Price: ").append(getPrice()).append("\n");
+        return sb.toString();
+    }
 
 }
-    
-    
-
-    
-
 
     //implementaciones de storable
-    //borradas las implementaciones de storable, ya que no se usan en ningun momento, ya dirá jose cuando usarlas
+    //borradas las implementaciones de storable, no se usan en ningun momento, ya dirá jose cuando usarlas
 
 
