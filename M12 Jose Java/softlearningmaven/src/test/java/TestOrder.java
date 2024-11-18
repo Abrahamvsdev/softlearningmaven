@@ -19,16 +19,16 @@ public class TestOrder {
 
         
         
-        //Order o;
         //String orderPackage = "h:202.20,w:202.20,W:202.20,f:true,d:202.20";
         
-            //o = Order.getInstance("calle 123", "receiverPerson", "2024/10/25-00:00:00", "2025/05/26-00:00:00", "123456789", "687687687", "kjasd", "2025/05/26-00:00:00", "2025/05/26-00:00:00", "description", 1111, "h:202.20,w:202.20,W:202.20,f:true,d:202.20");
-            
-            //o.setOrderPackage(orderPackage);
-            //System.out.println(o.getOrderDetails());
-            */
-
-            //GETINSTANCE PEQUEÑO
+        //o = Order.getInstance("calle 123", "receiverPerson", "2024/10/25-00:00:00", "2025/05/26-00:00:00", "123456789", "687687687", "kjasd", "2025/05/26-00:00:00", "2025/05/26-00:00:00", "description", 1111, "h:202.20,w:202.20,W:202.20,f:true,d:202.20");
+        
+        //o.setOrderPackage(orderPackage);
+        //System.out.println(o.getOrderDetails());
+        */
+        
+        //GETINSTANCE PEQUEÑO
+        
         try {
         Set<String> phoneContacts = new HashSet<>();
         phoneContacts.add("123456789");
@@ -54,26 +54,10 @@ public class TestOrder {
 
         
         //GETINSTANCE GRANDE
-        try {
-            // Configurar datos básicos
+        try { 
+
             Set<String> phoneContacts = new HashSet<>();
-            phoneContacts.add("123456789");
-            phoneContacts.add("987654321");
-
-            // Crear lista de OrderDetails
             List<OrderDetails> shopCart = new ArrayList<>();
-            OrderDetails.getInstance(2, "REF001", 10.0, 0.0);
-            OrderDetails.getInstance(3, "REF002", 20.0, 0.0);
-            //shopCart.set(1, OrderDetails.getInstance(2, "REF003", 10.0, 0.0)); para añadirlo en la posicion que yo quiera
-             // Eliminar un producto usando el metodo deleteDetail de Order
-            //shopCart.deleteDetail(1); // Eliminar un producto
-
-            
-
-
-            //shopCart.get(0).setAmount(3);  Modificar cantidad de un producto
-
-
             // Crear Order con getInstance grande
             Order order = Order.getInstance(
                 "Ejemplo 456",
@@ -87,9 +71,20 @@ public class TestOrder {
                 "2023/11/02-09:00:10", // paymentDate
                 "2023/11/12-17:00:10", // deliveryDate
                 "h:202.20,w:202.20,W:202.20,f:true,d:202.20", // Dimensions
-                shopCart
-            );
+                shopCart);
 
+                // Añadir un contacto de teléfono
+                //phoneContacts.add("987654321");
+                order.setPhoneContact("123456789");
+                order.setPhoneContact("987654321");
+
+                order.setDetail(1, "REF123", 10.00, 0.0);
+                order.updateDetail(0, 5 );
+                
+
+                // Crear lista de OrderDetails
+
+            //shopCart.add(OrderDetails.getInstance(3, "REF002", 20.0, 0.0));
             System.out.println("Order creado exitosamente");
             System.out.println(order.getCompleteOrderDetails());
 
@@ -101,6 +96,22 @@ public class TestOrder {
 
 
             }
+            // Configurar datos básicos
+            
+            //shopCart.set(1, OrderDetails.getInstance(2, "REF003", 10.0, 0.0)); para añadirlo en la posicion que yo quiera
+             // Eliminar un producto usando el metodo deleteDetail de Order
+            //shopCart.deleteDetail(1); // Eliminar un producto
+            
+            //eliminar un detalle del carrito con el metodo deleteDetail de Order
+            
+
+            
+            
+
+
+            //shopCart.get(0).setAmount(3);  Modificar cantidad de un producto
+
+
 
     
     
