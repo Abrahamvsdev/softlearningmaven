@@ -62,12 +62,12 @@ public class TestOrder {
 
             // Crear lista de OrderDetails
             List<OrderDetails> shopCart = new ArrayList<>();
-            shopCart.add(OrderDetails.getInstance(1, "REF001", 10.0, 0.0));
-            shopCart.add(OrderDetails.getInstance(2, "REF002", 20.0, 5.0));
-            shopCart.add(OrderDetails.getInstance(3, "REF003", 30.0, 10.0));
+            OrderDetails.getInstance(2, "REF001", 10.0, 0.0);
+            OrderDetails.getInstance(3, "REF002", 20.0, 0.0);
             //shopCart.set(1, OrderDetails.getInstance(2, "REF003", 10.0, 0.0)); para añadirlo en la posicion que yo quiera
              // Eliminar un producto usando el metodo deleteDetail de Order
             //shopCart.deleteDetail(1); // Eliminar un producto
+
             
 
 

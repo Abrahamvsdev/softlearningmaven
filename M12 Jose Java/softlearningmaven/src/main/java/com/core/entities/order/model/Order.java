@@ -294,6 +294,9 @@ public class Order extends Operation{
     // este es el setter de orderpackage 
     public int setOrderPackage(String oP) throws BuildException {
         
+        if (this.status != OrderStatus.CONFIRMED){
+            throw new BuildException("No se puede añadir un paquete a una orden no pagada");
+        }
         //importante setear los parametros a 0, para que se puedan crear 
         double weight = 0;
         double height = 0;
@@ -343,7 +346,7 @@ public class Order extends Operation{
     // setters de la clase auxiliar OrderDetarils en el Order
 
     public int setDetail(int amount, String detailRef, double price, double discount) throws ServiceException {
-    
+        
         
         try {
             OrderDetails detalle = OrderDetails.getInstance(amount, detailRef, price, discount);
@@ -407,6 +410,7 @@ public class Order extends Operation{
         }
         
         for (OrderDetails detail : shopCart) {
+            
             if (detail.getDetailRef().equals(ref)) {
                 detail.setAmount(amount);
                 return 0; 
@@ -429,7 +433,7 @@ public class Order extends Operation{
 
 
     // detalle por referencia y meter dentro del constructor
-    public int deleteDetail(String ref) throws ServiceException {
+    public void deleteDetail(String ref) throws ServiceException {
         
         int errorCode = Check.isNull(ref);
         if (errorCode != 0) {
@@ -439,10 +443,9 @@ public class Order extends Operation{
         for (OrderDetails detalle : shopCart) {
             if (detalle.getDetailRef().equals(ref)) {
                 this.shopCart.remove(detalle);
-                return 0;
             }
         }
-        return errorCode; 
+        
     }
 
 
