@@ -155,8 +155,8 @@ public class Check {
         
 
         // es null
-        if(date==null){
-            return -1;
+        if(date==""){
+            return -2;
         }
         //compila
         Pattern pattern = Pattern.compile(date);

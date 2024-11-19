@@ -41,7 +41,7 @@ public class TestOrder {
                 phoneContacts,
                 "2023/11/01-10:00:00",
                 "2023/11/10-18:00:00",
-                "Descripción del pedido",
+                "Descripción del pedido pequeño",
                 2002
         );
 
@@ -66,7 +66,7 @@ public class TestOrder {
                 phoneContacts,
                 "2023/11/01-10:00:00",
                 "2023/11/10-18:00:00",
-                "Descripción del pedido",
+                "Descripción del pedido grande",
                 2002,
                 "2023/11/02-09:00:10", // paymentDate
                 "2023/11/12-17:00:10", // deliveryDate
@@ -79,15 +79,43 @@ public class TestOrder {
                 order.setPhoneContact("987654321");
 
                 order.setDetail(1, "REF123", 10.00, 0.0);
-                order.updateDetail(0, 5 );
+                order.setDetail(1, "REF124", 10.00, 0.0);
+                order.setDetail(1, "REF125", 10.00, 0.0);
+                order.setDetail(1, "REF126", 10.00, 0.0);
                 
+                
+                System.out.println(order.getCompleteOrderDetails());
+                System.out.println(order.getNumDetails());
+                System.out.println("Order grande creado exitosamente");
+                
+                order.setDetail(1, "REF127", 10.00, 0.0);
+                order.updateDetail("REF123", 3);
+                order.deleteDetail(0);
 
+                //*******************PETANDO EL DETAIL */
+                try {
+                    order.updateDetail(-1, 15);
+                } catch (ServiceException e) {
+                    System.out.println("Error al añadir detalle: " + e.getMessage());
+                }
+                order.updateDetail("REF126", 5);
+                //order.setDeliveryDate("2023/11/12-18:00:10");
+                //order.updateDetail(0, 5 );
+                
+                //*******************PETANDO LA FECHA */
+                try {
+                    order.setPaymentDate("2023/11/02-09:00:10");
+                    
+                } catch (BuildException e) {
+                    System.out.println("Error al añadir la fecha: " + e.getMessage());
+                }
+                System.out.println(order.getPaymentDate()); 
+                
                 // Crear lista de OrderDetails
-
-            //shopCart.add(OrderDetails.getInstance(3, "REF002", 20.0, 0.0));
-            System.out.println("Order creado exitosamente");
-            System.out.println(order.getCompleteOrderDetails());
-
+                
+                //shopCart.add(OrderDetails.getInstance(3, "REF002", 20.0, 0.0));
+                
+            
             } catch (BuildException e) {
                 System.out.println("Error al crear Order grande: " + e.getMessage());
             } catch (ServiceException e) {

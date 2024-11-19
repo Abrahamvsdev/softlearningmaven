@@ -15,10 +15,10 @@ import com.core.entities.shared.operations.Operation;
 public class Order extends Operation {
 
     protected String receiverAddress, receiverPerson;
-    protected LocalDateTime paymentDate, deliveryDate; // Fecha de entrega
+    protected LocalDateTime paymentDate = null, deliveryDate = null; // Fecha de entrega
     protected String idClient; // ID del cliente
     protected Set<String> phoneContact; // Telefonos de contacto
-    protected ArrayList<OrderDetails> shopCart =null;
+    protected ArrayList<OrderDetails> shopCart = null;
     protected Dimensions orderPackage = null;
     protected OrderStatus status; // Estado de la compra
     StringBuilder sb = new StringBuilder();
@@ -241,14 +241,20 @@ public class Order extends Operation {
         }
     }
 
-    public int setPaymentDate(String paymentDate) {
-        int errorPaymentDate = Check.isValidDateComplete(paymentDate);
-        if (errorPaymentDate == 0) {
-            this.paymentDate = LocalDateTime.parse(paymentDate, this.formatter);
-            this.status = OrderStatus.CONFIRMED;
+    public int setPaymentDate(String paymentDate)throws BuildException {
+            if(this.status == OrderStatus.DELIVERED){
+                throw new BuildException("No se puede añadir una fecha de pago a una orden ya entregada");
+            }
+            int errorPaymentDate = Check.isValidDateComplete(paymentDate);
+            if (errorPaymentDate == 0) {
+                this.paymentDate = LocalDateTime.parse(paymentDate, this.formatter);
+                this.status = OrderStatus.CONFIRMED;
+            }
+            return -1;
         }
-        return errorPaymentDate;
-    }
+        
+
+    
 
     
 
@@ -321,13 +327,19 @@ public class Order extends Operation {
         return 0;
 
     }
-    public int setDeliveryDate(String deliveryDate) {
-        int errorDeliveryDate = Check.isValidDateComplete(deliveryDate);
-        if (errorDeliveryDate == 0) {
-            this.deliveryDate = LocalDateTime.parse(deliveryDate, this.formatter);
-            this.status = OrderStatus.DELIVERED;
+    public int setDeliveryDate(String deliveryDate) throws BuildException {
+        if(deliveryDate!=null){
+            if(this.status != OrderStatus.CONFIRMED){
+                throw new BuildException("No se puede añadir una fecha de entrega a una orden no pagada");
+            }
+            int errorDeliveryDate = Check.isValidDateComplete(deliveryDate);
+            if (errorDeliveryDate == 0) {
+                this.deliveryDate = LocalDateTime.parse(deliveryDate, this.formatter);
+                this.status = OrderStatus.DELIVERED;
+            }
+            return errorDeliveryDate;
         }
-        return errorDeliveryDate;
+        return 0;
     }
 
     // setters de la clase auxiliar OrderDetarils en el Order
