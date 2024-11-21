@@ -1,6 +1,3 @@
-import java.util.HashSet;
-import java.util.Set;
-
 import com.core.entities.exceptions.BuildException;
 import com.core.entities.exceptions.ServiceException;
 import com.core.entities.order.model.Order;
@@ -33,47 +30,49 @@ public class TestOrder {
         // sobre acciones que nos deben retornar algun error
 
         try {
-            Set<String> phoneContacts = new HashSet<>();
             
-
             Order order = Order.getInstance(
-                    "Ejemplo 456",
-                    "P. Palotes",
-                    "ID5678",
-                    phoneContacts,
-                    "2023/11/01-10:00:00",
-                    "2023/11/10-18:00:00",
-                    "Descripción del pedido pequeño",
-                    2002);
-
-            System.out.println(order.getOrderDetails());
-
+                "Ejemplo 456",
+                "P. Palotes",
+                "ID5678",
+                "555555555"
+                );
+                
+            order.getOrderDetails();
+                
+            order.setDetail(1, "REF123", 10.00, 0.0);
             // Añadir un contacto de teléfono sin que sea un string(No bypass)
             order.setPhoneContact("555555555");
             order.setPhoneContact("444444444");
 
-/////////////////////////// AQUI ESTOY AÑADIENDO OBJETOS Y NO PUEDO PORQUE NO HAY CARRITO CREADO -------->
+/////////////////////////// AQUI ESTOY AÑADIENDO OBJETOS ----------------->
             // Añadir un detalle al carrito
-            order.setDetail(1, "REF123", 10.00, 0.0);
-
+            order.setDetail(1, "REF124", 10.00, 0.0);
+            order.setDetail(1, "REF125", 10.00, 0.0);
             // Actualizar un detalle del carrito
             order.updateDetail("REF123", 3);
-
             // Eliminar un detalle del carrito
             order.deleteDetail(0);
-/////////////////////////// AQUI ESTOY AÑADIENDO OBJETOS Y NO PUEDO PORQUE NO HAY CARRITO CREADO <-----------------
+            /////////////////////////// AQUI ESTOY AÑADIENDO OBJETOS <-----------------
             // Mostrar el detalle del carrito
-            System.out.println(order.getCompleteOrderDetails());
+            System.out.println(order.getOrderDetails());
             System.out.println(order.getNumDetails());
+            System.out.println(order.getShopCart());
+            System.out.println(order.getStatus()); 
+            //
+            System.out.println(order.getStatus()); 
 
-            // Mostrar el número de detalles
-            System.out.println(order.getNumDetails());
-
-
-
-
+            //el
+            order.setDetail(1, "REF127", 10.00, 0.0);
             order.setPaymentDate("2023/11/02-09:00:10");
-
+            System.out.println(order.getShopCart());
+            System.out.println(order.getStatus());
+            order.setOrderPackage("h:202.20,w:202.20,W:202.20,f:true,d:202.20");
+            System.out.println(order.getStatus());
+            order.setDeliveryDate("2023/11/12-18:00:10");
+            System.out.println(order.getStatus());
+            order.setFinishDate("2023/11/12-18:00:10");
+            System.out.println(order.getStatus());
         } catch (BuildException e) {
             System.out.println("Error al crear Order pequeño: " + e.getMessage());
         }

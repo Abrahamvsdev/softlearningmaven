@@ -3,7 +3,6 @@ package com.core.entities.order.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.core.checks.Check;
@@ -30,45 +29,18 @@ public class Order extends Operation {
     }
 
     // ********* ORDER BUILDERS*********/ (quiere decir que hay mas) ademas, hay que
-    // setear bien el orden del enum
-    // la ref del order(el declarado en operation) es el código de factura y la ref
-    // del orderdetails es el isbn por ejemplo
-
     // jose tiene en el get instance pequeño (ref,
-    // clientid,startdate,description,addres,nombre,telefono)
     // ESTE ES EL GET INSTANCE PEQUEÑO
     public static Order getInstance(
             String receiverAddress,
             String receiverPerson,
             String idClient,
-            Set<String> phoneContact,
-            String initDate,
-            String finishDate,
-            String description,
-            int ref) throws BuildException {
+            String phoneContact
+            ) throws BuildException {
         Order o = new Order();
 
         StringBuilder errors = new StringBuilder();
         int errorCode;
-
-        /*
-         * private static <T> void validateAndSet(Dimensions d, T value, Function<T,
-         * Integer> setter, StringBuilder errors) {
-         * int errorCode;
-         * if ((errorCode = setter.apply(value)) != 0) {
-         * errors.append(Check.getErrorMessage(errorCode)).append("\n");
-         * }
-         * validateAndSet(d, length, d::setLength, errors);
-         * 
-         * Probar con esto algunas lineas a ver como funciona para dejar de repetir
-         * codigo, esta concretamente es para las dimensions
-         */
-
-        try {
-            o.operation(initDate, finishDate, description, ref);
-        } catch (BuildException e) {
-            throw new BuildException("Error en la operacion: " + e.getMessage());
-        }
 
         if ((errorCode = o.setReceiverAddress(receiverAddress)) != 0) {
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
@@ -82,11 +54,10 @@ public class Order extends Operation {
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
 
-        for (String phone : phoneContact) {
-            if ((errorCode = o.setPhoneContact(phone)) != 0) {
-                errors.append(Check.getErrorMessage(errorCode)).append("\n");
-            }
+        if ((errorCode = o.setPhoneContact(phoneContact)) != 0) {
+            errors.append(Check.getErrorMessage(errorCode)).append("\n");
         }
+        
 
         if (errors.length() > 0) {
 
@@ -98,75 +69,61 @@ public class Order extends Operation {
     }
 
     // ESTE ES EL GET INSTANCE GRANDE
-    // crear un getInstance con todos los parametros que me quedan, comrobando si o
-    // es diferente a null,
-
     public static Order getInstance(
             // campos del pequeño
             String receiverAddress,
             String receiverPerson,
             String idClient,
-            Set<String> phoneContact,
+            String phoneContact,
             String initDate,
-            String finishDate,
             String description,
             int ref,
             // campos del grande dice jose que deberian ser mas de 3
+            String shopCart,
             String paymentDate,
-            String deliveryDate,
             String orderPackage,
-            List<OrderDetails> shopCart) throws BuildException, ServiceException {
+            double weight, 
+            double height, 
+            double width, 
+            boolean fragile, 
+            double length,
+            String deliveryDate,
+            String finishDate) throws BuildException, ServiceException {
         StringBuilder errors = new StringBuilder();
         int errorCode;
-        Order o = null;
+        Order o = new Order();
+                // los otros campos que se validan aqui
 
-        try {
-            o = getInstance(receiverAddress, receiverPerson, idClient, phoneContact, initDate, finishDate, description,
-                    ref);
-            if (o != null) {
-
-                // foreach del carrito si no es nulo
-                if (shopCart == null) {
-                    throw new BuildException("El carrito está vacío");
+                try {
+                    o.operation(null, null, description, ref);
+                } catch (BuildException e) {
+                    throw new BuildException("Error en la operación(try operation): " + e.getMessage());
                 }
-                for (OrderDetails detail : shopCart) {
+                if(paymentDate!=null){
+                    if ((errorCode = o.setPaymentDate(paymentDate)) != 0) {
+                        errors.append(Check.getErrorMessage(errorCode)).append("\n");
+                    }
+                }
+                if(o.orderPackage != null){
                     try {
-                        o.setDetail(detail.getAmount(), detail.getDetailRef(), detail.getPrice(), detail.getDiscount());
-                    } catch (ServiceException e) {
-                        errors.append(e.getMessage()).append("\n");
+                    o.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
+                } catch (BuildException e) {
+                    throw new BuildException("Error en las dimensiones(try dimensiones): " + e.getMessage());
+                }
+                }
+                
+                
+                if(deliveryDate!=null){
+                    if ((errorCode = o.setDeliveryDate(deliveryDate)) != 0) {
+                        errors.append(Check.getErrorMessage(errorCode)).append("\n");
                     }
                 }
 
-                // probar las dimensiones
-                try {
-                    o.setOrderPackage(orderPackage);
-                } catch (BuildException e) {
-                    throw new BuildException("Error en las dimensiones: " + e.getMessage());
-                }
-
-                // los otros campos que se validan aqui
-                if ((errorCode = o.setPaymentDate(paymentDate)) != 0) {
-                    errors.append(Check.getErrorMessage(errorCode)).append("\n");
-                }
-
-                if ((errorCode = o.setDeliveryDate(deliveryDate)) != 0) {
-                    errors.append(Check.getErrorMessage(errorCode)).append("\n");
-                }
-
-                if ((errorCode = o.setOrderPackage(orderPackage)) != 0) {
-                    errors.append(Check.getErrorMessage(errorCode)).append("\n");
-                }
 
                 if (errors.length() > 0) {
                     throw new BuildException("No es posible crear la compra en el grande: \n" + errors.toString());
                 }
-
-            }
-        } catch (BuildException e) {
-            errors.append(e.getMessage()).append("\n");
-        }
         return o;
-
     }
 
     // getter
@@ -235,6 +192,7 @@ public class Order extends Operation {
 
     public void shopCartCanceled()throws ServiceException {
         if(this.status == OrderStatus.CREATED) {
+            this.shopCart.clear();
             this.status = OrderStatus.CANCELLED;
         }else{
             throw new ServiceException("No se puede cancelar una orden que ya ha sido pagada");
@@ -242,6 +200,7 @@ public class Order extends Operation {
     }
 
     public int setPaymentDate(String paymentDate)throws BuildException {
+        if (paymentDate!=null){
             if(this.status == OrderStatus.DELIVERED){
                 throw new BuildException("No se puede añadir una fecha de pago a una orden ya entregada");
             }
@@ -249,9 +208,12 @@ public class Order extends Operation {
             if (errorPaymentDate == 0) {
                 this.paymentDate = LocalDateTime.parse(paymentDate, this.formatter);
                 this.status = OrderStatus.CONFIRMED;
+                return 0;
             }
             return -1;
         }
+        return -1;
+    }
         
 
     
@@ -278,7 +240,7 @@ public class Order extends Operation {
     // este es el setter de orderpackage
     public int setOrderPackage(String oP) throws BuildException {
 
-        if (this.status == OrderStatus.CONFIRMED) {
+        if (this.status != OrderStatus.CONFIRMED) {
             throw new BuildException("No se puede añadir un paquete a una orden no pagada");
         }
         // importante setear los parametros a 0, para que se puedan crear
@@ -329,17 +291,31 @@ public class Order extends Operation {
     }
     public int setDeliveryDate(String deliveryDate) throws BuildException {
         if(deliveryDate!=null){
-            if(this.status != OrderStatus.CONFIRMED){
-                throw new BuildException("No se puede añadir una fecha de entrega a una orden no pagada");
-            }
             int errorDeliveryDate = Check.isValidDateComplete(deliveryDate);
             if (errorDeliveryDate == 0) {
                 this.deliveryDate = LocalDateTime.parse(deliveryDate, this.formatter);
                 this.status = OrderStatus.DELIVERED;
+                return 0;
+            }
+            if(this.status != OrderStatus.FORTHCOMMING){
+                throw new BuildException("No se puede entregar al transportista sin poner un paquete");
             }
             return errorDeliveryDate;
         }
         return 0;
+    }
+
+    public int setOrderFinishDate(String finishDate) throws BuildException {
+        if(this.status != OrderStatus.DELIVERED){
+            throw new BuildException("No se puede añadir una fecha de finalización a una orden que no ha sido entregada");
+        }
+        int errorFinishDate = Check.isValidDateComplete(finishDate);
+        if (errorFinishDate == 0) {
+            this.finishDate = LocalDateTime.parse(finishDate, this.formatter);
+            this.status = OrderStatus.FINISHED;
+            return 0;
+        }
+        return errorFinishDate;
     }
 
     // setters de la clase auxiliar OrderDetarils en el Order
@@ -348,8 +324,11 @@ public class Order extends Operation {
     // *************************************************************************
 
     public String setDetail(int amount, String detailRef, double price, double discount) throws ServiceException {
-
+        if(this.status == OrderStatus.CONFIRMED){
+            throw new ServiceException("No se puede añadir un detalle a una orden ya pagada");
+        }
         try {
+            
             OrderDetails detalle = OrderDetails.getInstance(amount, detailRef, price, discount);
 
             this.shopCart.add(detalle);
@@ -421,7 +400,9 @@ public class Order extends Operation {
 
     // detalle por posicion
     public void deleteDetail(int pos) throws ServiceException {
-
+        if(this.status == OrderStatus.CONFIRMED){
+            throw new ServiceException("No se puede eliminar un detalle de una orden ya pagada");
+        }
         if (pos < 0 || pos >= shopCart.size()) {
             throw new ServiceException("Error en pos: Posición inválida");
         }
@@ -432,7 +413,9 @@ public class Order extends Operation {
 
     // detalle por referencia y meter dentro del constructor
     public void deleteDetail(String ref) throws ServiceException {
-
+        if(this.status == OrderStatus.CONFIRMED){
+            throw new ServiceException("No se puede eliminar un detalle de una orden ya pagada");
+        }
         int errorCode = Check.isNull(ref);
         if (errorCode != 0) {
             throw new ServiceException("Error en ref: " + Check.getErrorMessage(errorCode));
@@ -464,7 +447,7 @@ public class Order extends Operation {
         sb.append("Receiver Address: ").append(this.receiverAddress).append("\n");
         sb.append("Receiver Person: ").append(this.receiverPerson).append("\n");
         sb.append("ID Client: ").append(this.idClient).append("\n");
-        // los telefonos van aparte
+        sb.append("Phone Contact: ").append(this.phoneContact).append("\n");
         sb.append("Init Date: ").append(this.initDate).append("\n");
         sb.append("Finish Date: ").append(this.finishDate).append("\n");
         sb.append("Description: ").append(this.description).append("\n");
@@ -477,16 +460,16 @@ public class Order extends Operation {
         sb.setLength(0); // sb a 0 para que no se repitan ordenes anteriores
         sb.append("Order Details: \n");
         sb.append("Receiver Address: ").append(this.receiverAddress).append("\n");
+        sb.append("Reference: ").append(this.ref).append("\n");
         sb.append("Receiver Person: ").append(this.receiverPerson).append("\n");
         sb.append("ID Client: ").append(this.idClient).append("\n");
-        sb.append("Phone Contact: ").append(getPhoneContact()).append("\n");
-        sb.append("Init Date: ").append(this.initDate).append("\n");
-        sb.append("Finish Date: ").append(this.finishDate).append("\n");
         sb.append("Description: ").append(this.description).append("\n");
-        sb.append("Reference: ").append(this.ref).append("\n");
+        sb.append("Phone Contact: ").append(this.phoneContact).append("\n");
+        sb.append("Init Date: ").append(this.initDate).append("\n");
         sb.append("Payment Date: ").append(this.paymentDate).append("\n");
-        sb.append("Order Package: ").append(this.getOrderPackage()).append("\n");
+        sb.append("Order Package: ").append(this.orderPackage).append("\n");
         sb.append("Delivery Date: ").append(this.deliveryDate).append("\n");
+        sb.append("Finish Date: ").append(this.finishDate).append("\n");
         sb.append("Status: ").append(this.status).append("\n");
         sb.append("Shop Cart: \n");
         for (OrderDetails detail : shopCart) {

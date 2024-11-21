@@ -1,27 +1,27 @@
 // Version: 1.0
-package com.core.entities.shared.dimensions; 
+package com.core.entities.shared.dimensions;
+
 import com.core.checks.Check;
 import com.core.entities.exceptions.BuildException;
 
-
 public class Dimensions {
-    protected double weight;
-    protected double height;
-    protected double width;
-    protected boolean fragile;
-    protected double length;
-    protected double volume;
-    
-    protected Dimensions(){
+    protected double weight = 0.0;
+    protected double height = 0.0;
+    protected double width = 0.0;
+    protected boolean fragile = false;
+    protected double length = 0.0;
+    protected double volume = 0.0;
+
+    protected Dimensions() {
 
     };
-    public static Dimensions getInstanceDimensions(double weight, double height, double width, boolean fragile, double length) throws BuildException{ 
+
+    public static Dimensions getInstanceDimensions(double weight, double height, double width, boolean fragile,
+            double length) throws BuildException {
         StringBuilder errors = new StringBuilder();
 
-        
         Dimensions d = new Dimensions();
         int errorCode;
-
 
         if ((errorCode = d.setWeight(weight)) != 0) {
             errors.append(Check.getErrorMessage(errorCode)).append("\n");
@@ -43,13 +43,12 @@ public class Dimensions {
         }
 
         if (errors.length() > 0) {
-            
             throw new BuildException("Not possible to create the dimensions: \n" + errors.toString());
         }
         return d;
     }
 
-    public double  getWeight() {
+    public double getWeight() {
         return this.weight;
     }
 
@@ -68,24 +67,12 @@ public class Dimensions {
     public double getLength() {
         return this.length;
     }
-    
+
     public double getVolume() {
         return this.width * this.height * this.length;
     }
 
-    // public String getVolumeDetails() {
-    //     // es un bloque de texto, como si escribieras en un note pad, se usa para escribir un string largo sin tener que concatenar
-    //     // preguntar por que no hace falta cerrarlo
-    //     return """
-    //             Height: """ + this.getHeight() + " cm\n" +
-    //             "Weight: " + this.getWeight() + " kg\n" +
-    //             "Width: " + this.getWidth() + " cm\n" +
-    //             "Fragile: " + this.getFragile() + "\n" +
-    //             "Length: " + this.getLength() + " cm\n" +
-    //             "Volume: " + this.getVolume() + " cubic cm";
-    // }
     
-    //agregar un metodo toString
     public String toString() {
         return "Height: " + this.getHeight() + " cm\n" +
                 "Weight: " + this.getWeight() + " kg\n" +
@@ -95,21 +82,6 @@ public class Dimensions {
                 "Volume: " + this.getVolume() + " cubic cm";
     }
 
-    // @Override
-    // public StringBuilder toString() {
-    //     StringBuilder details = new StringBuilder();
-    //     details.append("Height: ").append(this.getHeight()).append(" cm\n")
-    //            .append("Weight: ").append(this.getWeight()).append(" kg\n")
-    //            .append("Width: ").append(this.getWidth()).append(" cm\n")
-    //            .append("Fragile: ").append(this.getFragile()).append("\n")
-    //            .append("Length: ").append(this.getLength()).append(" cm\n")
-    //            .append("Volume: ").append(this.getVolume()).append(" cubic cm");
-    //     return details;
-    // }
-    
-
-
-    
 
     public int setWeight(double weight) {
         int errorWeight = Check.range(weight);
@@ -144,7 +116,7 @@ public class Dimensions {
     }
 
     public int setFragile(boolean f) {
-        if(f == true || f == false){
+        if (f == true || f == false) {
             this.fragile = f;
             return 0;
         }

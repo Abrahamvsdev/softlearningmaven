@@ -1,5 +1,6 @@
 package com.core.checks;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
@@ -110,21 +111,22 @@ public class Check {
     // a pasos:
     //se declara el patron
     // se compila
-    // comprobamos si es null
+    
     //se usa el matcher
     // si es correcto local date con el "formatter of pattern"
     //
     public static int isValidDate(String date) {
+
         // Expresión regular para validar el formato de la fecha (dd-MM-yyyy)
+        if (date == null) {
+            return 0;  // Código de error para una fecha null
+        }
         String datePattern = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)\\d\\d$";
         
         // Compila
         Pattern pattern = Pattern.compile(datePattern);
     
         // es null
-        if (date == null) {
-            return -1;  // Código de error para una fecha null
-        }
         
         // matcher
         Matcher matcher = pattern.matcher(date);
@@ -150,36 +152,25 @@ public class Check {
 ///////////////
 
 
-    public static int isValidDateComplete(String date) {
-        // Expresión regular para validar el formato de la fecha (dd-MM-yyyy con horas y minutos)
-        
-
-        // es null
-        if(date==""){
-            return -2;
-        }
-        //compila
-        Pattern pattern = Pattern.compile(date);
-
-        // matcher
+public static int isValidDateComplete(String date) {
+    if (date != null) {
+        Pattern pattern = Pattern.compile("^(\\d{4})/(\\d{2})/(\\d{2})-(\\d{2}):(\\d{2}):(\\d{2})$");
         Matcher matcher = pattern.matcher(date);
-
         if (matcher.matches()) {
-            // si es correcto, formatter pattern
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd-HH:mm:ss");
             try {
-                // si la fecha es valida, no hay errores
-                LocalDate.parse(date, formatter);
-                return 0;  // si esta bien
+                LocalDateTime.parse(date, formatter);
+                return 0;  
             } catch (DateTimeParseException e) {
-                // Si ocurre un error al intentar parsear la fecha, significa que no es válida
-                return -14;  //formato correcto pero no valida
+                return -14;  // Formato correcto pero fecha inválida
             }
         } else {
-            // Si no coincide con el patrón de formato
-            return -4;  // Código de error para un formato incorrecto
+            return 4;  // Formato incorrecto
         }
     }
+    return 0;
+}
+
 
 
 
