@@ -74,6 +74,9 @@ public class TestOrder {
             order.setOrderFinishDate("2023/11/12-18:00:10");
             System.out.println(order.getStatus());
             order.updateDetail(0, 15);
+
+
+            
         } catch (BuildException e) {
             System.out.println("Error al crear Order pequeño: " + e.getMessage());
         }

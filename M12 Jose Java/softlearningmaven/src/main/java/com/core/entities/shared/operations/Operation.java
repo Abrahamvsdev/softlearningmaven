@@ -72,7 +72,7 @@ public abstract class Operation {
             }
             return errorCode;
         }
-        return 0;
+        return 15;
     }
 
     public int setFinishDate(String finishDate) throws BuildException {

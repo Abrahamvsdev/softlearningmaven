@@ -60,11 +60,11 @@ public class OrderMapper {
                 order.getReceiverPerson(),
                 order.getIdClient(),
                 order.getPhoneContact(),
-                initDate,
-                finishDate,
+                order.getInitDate(),
+                order.getFinishDate(),
                 order.getDescription(),
                 order.getRef(),
-                paymentDate,
+                
                 deliveryDate,
                 orderPackage
         );

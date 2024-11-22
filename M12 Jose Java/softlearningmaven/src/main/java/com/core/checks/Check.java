@@ -168,7 +168,7 @@ public static int isValidDateComplete(String date) {
             return 4;  // Formato incorrecto
         }
     }
-    return 0;
+    return 0;  // Fecha nula
 }
 
 

@@ -93,17 +93,9 @@ public class Order extends Operation {
         // los otros campos que se validan aqui
 
         try {
-            o.operation(initDate, null, description, ref);
+            o.operation( initDate,null, description, ref);
         } catch (BuildException e) {
             throw new BuildException("Error en la operación(try operation): " + e.getMessage());
-        }
-
-        if (o.orderPackage != null) {
-            try {
-                o.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
-            } catch (BuildException e) {
-                throw new BuildException("Error en las dimensiones(try dimensiones): " + e.getMessage());
-            }
         }
 
         if (paymentDate != null) {
@@ -111,7 +103,20 @@ public class Order extends Operation {
                 errors.append(Check.getErrorMessage(errorCode)).append("\n");
             }
         }
-
+        
+        if (orderPackage != null) {
+            try {
+                o.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
+            } catch (BuildException e) {
+                throw new BuildException("Error en las dimensiones(try dimensiones): " + e.getMessage());
+            }
+        }
+        
+        if (shopCart != null) {
+            if ((errorCode = o.setOrderPackage(orderPackage)) != 0) {
+                errors.append(Check.getErrorMessage(errorCode)).append("\n");
+            }
+        }
         if (deliveryDate != null) {
             if ((errorCode = o.setDeliveryDate(deliveryDate)) != 0) {
                 errors.append(Check.getErrorMessage(errorCode)).append("\n");
@@ -124,11 +129,6 @@ public class Order extends Operation {
             }
         }
 
-        if (shopCart != null) {
-            if ((errorCode = o.setOrderPackage(orderPackage)) != 0) {
-                errors.append(Check.getErrorMessage(errorCode)).append("\n");
-            }
-        }
 
         if (errors.length() > 0) {
             throw new BuildException("No es posible crear la compra en el grande: \n" + errors.toString());
@@ -219,7 +219,7 @@ public class Order extends Operation {
                 }
                 return -1;
             }
-            throw new BuildException("No se puede añadir una fecha de pago a una orden ya pagada");
+            return 0;
         }
         throw new BuildException("No se puede");
     }
@@ -244,9 +244,8 @@ public class Order extends Operation {
     // este es el setter de orderpackage
     public int setOrderPackage(String oP) throws BuildException {
 
-        if (this.status != OrderStatus.CONFIRMED) {
-            throw new BuildException("No se puede añadir un paquete a una orden no pagada");
-        }
+        if (this.status == OrderStatus.CONFIRMED) {
+        
         // importante setear los parametros a 0, para que se puedan crear
         double weight = 0;
         double height = 0;
@@ -284,15 +283,15 @@ public class Order extends Operation {
 
             }
             this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
-            if (this.status == OrderStatus.CONFIRMED) {
-
                 this.status = OrderStatus.FORTHCOMMING;
-            }
+                
         }
 
         return 0;
 
     }
+    throw new BuildException("No se puede añadir un paquete a una orden no pagada set order package");
+}
 
     public int setDeliveryDate(String deliveryDate) throws BuildException {
         if (deliveryDate != null) {
@@ -532,7 +531,7 @@ public class Order extends Operation {
         sb.append("Description: ").append(this.description).append("\n");
         sb.append("Phone Contact: ").append(this.phoneContact).append("\n");
         sb.append("Init Date: ").append(this.initDate).append("\n");
-        sb.append("Payment Date: ").append(this.getPaymentDate()).append("\n");
+        sb.append("Payment Date: ").append(this.paymentDate).append("\n");
         sb.append("Delivery Date: ").append(this.getDeliveryDate()).append("\n");
         sb.append("Finish Date: ").append(getFinishDate()).append("\n");
         sb.append("Status: ").append(this.status).append("\n");
