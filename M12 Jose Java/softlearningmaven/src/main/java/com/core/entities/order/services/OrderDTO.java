@@ -1,51 +1,54 @@
 package com.core.entities.order.services;
 
-import java.util.Set;
-
 public class OrderDTO {
-    private final String receiverAddress;
-    private final String receiverPerson;
-    private final String idClient;
-    private final Set<String> phoneContact;
+    private final int reference;
+    private final String description;
     private final String initDate;
     private final String finishDate;
-    private final String description;
-    private final int ref;
+    private final String receiverAddress;
+    private final String phoneContacts;
+    private final String idClient;
+    private final String receiverPerson;
     private final String paymentDate;
     private final String deliveryDate;
-    private final String orderPackage;
+    private final double height;
+    private final double width;
+    private final double depth;
+    private final double weight;
+    private final boolean fragile;
+    private final double length;
+    private final String shopCart;
 
-    public OrderDTO(String receiverAddress, String receiverPerson, String idClient, Set<String> phoneContact,
-                    String initDate, String finishDate, String description, int ref,
-                    String paymentDate, String deliveryDate, String orderPackage) {
-        this.receiverAddress = receiverAddress;
-        this.receiverPerson = receiverPerson;
-        this.idClient = idClient;
-        this.phoneContact = phoneContact;
+    public OrderDTO(int reference, String description, String initDate, String finishDate, String receiverAddress,
+                    String phoneContacts, String idClient, String receiverPerson, String paymentDate,
+                    String deliveryDate, double height, double width, double depth, double weight, boolean fragile,
+                    double length, String shopCart) {
+        this.reference = reference;
+        this.description = description;
         this.initDate = initDate;
         this.finishDate = finishDate;
-        this.description = description;
-        this.ref = ref;
+        this.receiverAddress = receiverAddress;
+        this.phoneContacts = phoneContacts;
+        this.idClient = idClient;
+        this.receiverPerson = receiverPerson;
         this.paymentDate = paymentDate;
         this.deliveryDate = deliveryDate;
-        this.orderPackage = orderPackage;
+        this.height = height;
+        this.width = width;
+        this.depth = depth;
+        this.weight = weight;
+        this.fragile = fragile;
+        this.length = length;
+        this.shopCart = shopCart;
     }
 
-    
-    public String getReceiverAddress() {
-        return receiverAddress;
+    // Getters
+    public int getReference() {
+        return reference;
     }
 
-    public String getReceiverPerson() {
-        return receiverPerson;
-    }
-
-    public String getIdClient() {
-        return idClient;
-    }
-
-    public Set<String> getPhoneContact() {
-        return phoneContact;
+    public String getDescription() {
+        return description;
     }
 
     public String getInitDate() {
@@ -56,12 +59,20 @@ public class OrderDTO {
         return finishDate;
     }
 
-    public String getDescription() {
-        return description;
+    public String getReceiverAddress() {
+        return receiverAddress;
     }
 
-    public int getRef() {
-        return ref;
+    public String getPhoneContacts() {
+        return phoneContacts;
+    }
+
+    public String getIdClient() {
+        return idClient;
+    }
+
+    public String getReceiverPerson() {
+        return receiverPerson;
     }
 
     public String getPaymentDate() {
@@ -72,7 +83,31 @@ public class OrderDTO {
         return deliveryDate;
     }
 
-    public String getOrderPackage() {
-        return orderPackage;
+    public double getHeight() {
+        return height;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getDepth() {
+        return depth;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public boolean isFragile() {
+        return fragile;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public String getShopCart() {
+        return shopCart;
     }
 }

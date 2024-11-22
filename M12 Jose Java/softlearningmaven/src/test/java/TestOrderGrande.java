@@ -22,10 +22,10 @@ public class TestOrderGrande {
                 null, // Product Name
                 "", // Product Description
                 "", // Product Category
-                10.0, // Quantity
-                5.0, // Price per Unit
-                5.0, // Discount
-                true, // Is Paid
+                0.0, // Quantity
+                0.0, // Price per Unit
+                0.0, // Discount
+                false, // Is Paid
                 10.0, // Total Amount
                 null, // Delivery Date
                 null // Additional Notes
