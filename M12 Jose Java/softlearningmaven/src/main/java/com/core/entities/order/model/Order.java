@@ -521,25 +521,53 @@ public class Order extends Operation {
     }
 
     public String getCompleteOrderDetails() {
-
-        sb.setLength(0); // sb a 0 para que no se repitan ordenes anteriores
-        sb.append("Order Details: \n");
-        sb.append("Receiver Address: ").append(this.receiverAddress).append("\n");
-        sb.append("Reference: ").append(this.ref).append("\n");
-        sb.append("Receiver Person: ").append(this.receiverPerson).append("\n");
-        sb.append("ID Client: ").append(this.idClient).append("\n");
-        sb.append("Description: ").append(this.description).append("\n");
-        sb.append("Phone Contact: ").append(this.phoneContact).append("\n");
-        sb.append("Init Date: ").append(this.initDate).append("\n");
-        sb.append("Payment Date: ").append(this.paymentDate).append("\n");
-        sb.append("Delivery Date: ").append(this.getDeliveryDate()).append("\n");
-        sb.append("Finish Date: ").append(getFinishDate()).append("\n");
-        sb.append("Status: ").append(this.status).append("\n");
-        sb.append("Shop Cart: \n");
-        for (OrderDetails detail : shopCart) {
-            sb.append(detail.toString()).append("\n");
+        sb.setLength(0); // Limpiamos el StringBuilder
+        
+        // Información básica del pedido
+        sb.append("=== ORDEN DETAILS ===\n")
+          .append("Reference: ").append(this.ref).append("\n")
+          .append("ID Client: ").append(this.idClient).append("\n\n")
+          
+          // Información de contacto
+          .append("=== CONTACT INFO ===\n")
+          .append("Receiver Person: ").append(this.receiverPerson).append("\n")
+          .append("Receiver Address: ").append(this.receiverAddress).append("\n")
+          .append("Phone Contact: ").append(this.phoneContact).append("\n\n")
+          
+          // Fechas
+          .append("=== DATES ===\n")
+          .append("Init Date: ").append(this.initDate).append("\n")
+          .append("Payment Date: ").append(this.paymentDate != null ? this.paymentDate : "Pending").append("\n")
+          .append("Delivery Date: ").append(this.deliveryDate != null ? this.deliveryDate : "Pending").append("\n")
+          .append("Finish Date: ").append(this.finishDate != null ? this.finishDate : "Pending").append("\n\n")
+          
+          // Dimensiones y características del paquete
+          .append("=== PACKAGE INFO ===\n");
+        
+        if (this.orderPackage != null) {
+            sb.append("Height: ").append(this.orderPackage.getHeight()).append(" cm\n")
+              .append("Width: ").append(this.orderPackage.getWidth()).append(" cm\n")
+              .append("Length: ").append(this.orderPackage.getLength()).append(" cm\n")
+              .append("Weight: ").append(this.orderPackage.getWeight()).append(" kg\n")
+              .append("Fragile: ").append(this.orderPackage.getFragile()).append("\n\n");
         }
-        sb.append("Total Price: ").append(getPrice()).append("\n");
+        
+        // Estado y detalles adicionales
+        sb.append("=== STATUS INFO ===\n")
+          .append("Status: ").append(this.status).append("\n")
+          .append("Description: ").append(this.description).append("\n\n")
+          
+          // Carrito de compras
+          .append("=== SHOPPING CART ===\n");
+        
+        if (shopCart != null && !shopCart.isEmpty()) {
+            for (OrderDetails detail : shopCart) {
+                sb.append(detail.toString()).append("\n");
+            }
+        } else {
+            sb.append("Empty cart\n");
+        }
+        
         return sb.toString();
     }
 

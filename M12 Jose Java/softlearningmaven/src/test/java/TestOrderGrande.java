@@ -11,14 +11,14 @@ public class TestOrderGrande {
         // acciones que nos deben retornar algun error
         try {
             Order order = Order.getInstance(
-                    "calle falsa 123",
-                    "Pedro Medario",
-                    "ID1234",
-                    "123456789",
-                    "2023/11/02-09:00:10",
+                "calle falsa 123",
+                "Pedro Medario",
+                "ID1234",
+                "123456789",
+                    "2023/11/02-10:00:10",
                     "description",
                     1234,
-                    "shopCart",
+                    "shopcart",
                     "2023/11/02-10:00:10",
                     "h:202.20,w:202.20,W:202.20,f:true,d:202.20",
                     10.0,

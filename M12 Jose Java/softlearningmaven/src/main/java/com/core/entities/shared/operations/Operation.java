@@ -40,7 +40,7 @@ public abstract class Operation {
         }
 
         if (errors.length() > 0) {
-            throw new BuildException("No es posible crear la operación: \n" + errors.toString());
+            throw new BuildException("No es posible crear la operaciónORDERDENTRO: \n" + errors.toString());
         }
 
     }
