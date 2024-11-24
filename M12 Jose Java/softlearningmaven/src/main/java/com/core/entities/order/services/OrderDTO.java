@@ -1,6 +1,5 @@
 package com.core.entities.order.services;
 
-import com.core.entities.order.model.Order;
 import com.core.entities.order.model.OrderStatus;
 
 public class OrderDTO {
@@ -27,7 +26,7 @@ public class OrderDTO {
     public OrderDTO(int reference, String description, String initDate, String finishDate, String receiverAddress,
                     String phoneContacts, String idClient, String receiverPerson, String paymentDate,
                     String deliveryDate, double height, double width, double depth, double weight, boolean fragile,
-                    double length, String shopCart) {
+                    double length, String shopCart, OrderStatus status, double totalPrice) {
         this.reference = reference;
         this.description = description;
         this.initDate = initDate;
