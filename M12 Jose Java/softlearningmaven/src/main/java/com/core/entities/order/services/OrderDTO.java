@@ -1,5 +1,8 @@
 package com.core.entities.order.services;
 
+import com.core.entities.order.model.Order;
+import com.core.entities.order.model.OrderStatus;
+
 public class OrderDTO {
     private final int reference;
     private final String description;
@@ -18,6 +21,8 @@ public class OrderDTO {
     private final boolean fragile;
     private final double length;
     private final String shopCart;
+    private final OrderStatus status; // Nuevo campo
+    private final double totalPrice;
 
     public OrderDTO(int reference, String description, String initDate, String finishDate, String receiverAddress,
                     String phoneContacts, String idClient, String receiverPerson, String paymentDate,
@@ -40,6 +45,9 @@ public class OrderDTO {
         this.fragile = fragile;
         this.length = length;
         this.shopCart = shopCart;
+        this.status = status;
+        this.totalPrice = totalPrice;
+        
     }
 
     // Getters
@@ -110,4 +118,18 @@ public class OrderDTO {
     public String getShopCart() {
         return shopCart;
     }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+
+
+
+
+
 }
