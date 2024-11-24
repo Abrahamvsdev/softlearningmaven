@@ -73,24 +73,6 @@ public class OrderDetails {
     public String getDetailRef() {
         return detailRef;
     }
-    // intentar en otro momento
-
-    // public int getDetailRef()throws BuildException{
-    //     try {
-    //         errorDetailRef= Check.minMaxLength(detailRef)
-    //         if(errorDetailRef==0){
-    //             return 0;
-    //         }
-    //     } catch (Exception e) {
-    //         if(errorCode!=0){
-    //             throw new BuildException 
-    //         }
-    //     } finally {
-    //         if(errorDetailRef==0)
-    //     }
-    // }
-//retornaur un 21
-    //}
 
     public double getPrice(){
         
@@ -138,10 +120,14 @@ public class OrderDetails {
         return 0;
     }
 
+
     public int setDiscount(double discount) {
-        int errorDiscount = Check.rangeDiscount(discount); // Range de double >0 && <50.00
+        int errorDiscount = Check.rangeDiscount(discount);
         if (errorDiscount != 0) {
             return errorDiscount;
+        }
+        if (discount >= price) {
+            return -20; 
         }
         this.discount = discount;
         return 0;
