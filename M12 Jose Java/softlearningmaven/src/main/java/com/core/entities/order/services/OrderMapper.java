@@ -3,12 +3,12 @@ package com.core.entities.order.services;
 import com.core.entities.order.model.Order;
 import com.core.entities.exceptions.BuildException;
 
-import java.util.Set;
+import com.core.entities.exceptions.ServiceException;
 
 public class OrderMapper {
 
-    public static Order orderFromDTO(OrderDTO odto) throws BuildException {
-        
+    public static Order orderFromDTO(OrderDTO odto) throws BuildException, ServiceException {
+
         Order order = Order.getInstance(
                 odto.getReceiverAddress(),
                 odto.getReceiverPerson(),
@@ -16,15 +16,17 @@ public class OrderMapper {
                 odto.getPhoneContact(),
                 odto.getInitDate(),
                 odto.getFinishDate(),
+                0,
                 odto.getDescription(),
-                odto.getRef()
-        );
-
-
-        Set<String> phoneContacts = odto.getPhoneContact();
-        for (String phone : phoneContacts) {
-            order.setPhoneContact(phone);
-        }
+                null,
+                null,
+                odto.getRef(),
+                0,
+                0,
+                false,
+                0,
+                null,
+                null);
 
         return order;
     }
@@ -56,17 +58,24 @@ public class OrderMapper {
         }
 
         return new OrderDTO(
-                order.getReceiverAddress(),
-                order.getReceiverPerson(),
-                order.getIdClient(),
-                order.getPhoneContact(),
-                order.getInitDate(),
-                order.getFinishDate(),
-                order.getDescription(),
                 order.getRef(),
-                
+                order.getDescription(),
+                initDate,
+                finishDate,
+                order.getReceiverAddress(),
+                PhoneContact,
+                order.getIdClient(),
+                order.getReceiverPerson(),
+                paymentDate,
                 deliveryDate,
-                orderPackage
-        );
+                0,
+                0,
+                0,
+                0,
+                false,
+                0,
+                orderPackage,
+                order.getStatus(),
+                0.0);
     }
 }
