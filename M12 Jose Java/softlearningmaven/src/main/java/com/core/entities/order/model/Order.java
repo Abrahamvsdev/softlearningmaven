@@ -170,9 +170,8 @@ public class Order extends Operation {
         return this.idClient;
     }
 
-    public Set<String> getPhoneContact() {
-
-        return this.phoneContact;
+    public String getPhoneContact() {
+        return this.phoneContact.toString();
     }
 
     public Dimensions getOrderPackage() {

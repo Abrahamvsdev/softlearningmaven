@@ -63,7 +63,7 @@ public class OrderMapper {
                 initDate,
                 finishDate,
                 order.getReceiverAddress(),
-                PhoneContact,
+                order.getPhoneContact(),
                 order.getIdClient(),
                 order.getReceiverPerson(),
                 paymentDate,
