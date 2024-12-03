@@ -1,8 +1,11 @@
 import com.core.entities.exceptions.BuildException;
 import com.core.entities.exceptions.ServiceException;
 import com.core.entities.order.model.Order;
+import com.core.entities.order.services.OrderDTO;
+import com.core.entities.order.services.OrderMapper;
 
-public class TestOrderGrande {
+
+public class TestOrderDTO {
     public static void main(String[] args) throws Exception, BuildException, ServiceException {
 
         // GETINSTANCE GRANDE
@@ -12,7 +15,7 @@ public class TestOrderGrande {
         try {
             Order order = Order.getInstance(
                 "calle falsa 123",
-                "Pedro Medario",
+                "Carmelo Coton",
                 "ID1234",
                 "123456789",
                 "2023/11/02-10:00:10",
@@ -29,6 +32,10 @@ public class TestOrderGrande {
                 "2024/11/02-09:00:10",
                 "2024/11/02-10:00:10");
             System.out.println(order.getCompleteOrderDetails());
+
+            //testear DTO
+            OrderDTO odto = OrderMapper.dtoFromOrder(order);
+            System.out.println(odto.toString());
             
         } catch (BuildException | ServiceException e) {
             System.out.println(e.getMessage());

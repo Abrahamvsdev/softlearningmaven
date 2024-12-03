@@ -8,6 +8,7 @@ public class OrderDTO {
     private final String initDate;
     private final String finishDate;
     private final String receiverAddress;
+    @SuppressWarnings("FieldMayBeFinal")
     private String phoneContact;
     private final String idClient;
     private final String receiverPerson;
