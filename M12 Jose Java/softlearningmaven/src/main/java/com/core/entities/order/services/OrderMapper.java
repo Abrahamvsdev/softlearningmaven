@@ -1,9 +1,8 @@
 package com.core.entities.order.services;
 
-import com.core.entities.order.model.Order;
 import com.core.entities.exceptions.BuildException;
-
 import com.core.entities.exceptions.ServiceException;
+import com.core.entities.order.model.Order;
 
 public class OrderMapper {
 
@@ -73,7 +72,7 @@ public class OrderMapper {
                 0,
                 0,
                 false,
-                0,
+                order.getOrderPackage().getLength(),
                 orderPackage,
                 order.getStatus(),
                 0.0);

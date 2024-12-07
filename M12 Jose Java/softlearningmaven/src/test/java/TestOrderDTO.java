@@ -31,11 +31,12 @@ public class TestOrderDTO {
                 3.0,
                 "2024/11/02-09:00:10",
                 "2024/11/02-10:00:10");
-            System.out.println(order.getCompleteOrderDetails());
+            //System.out.println(order.getCompleteOrderDetails());
 
             //testear DTO
             OrderDTO odto = OrderMapper.dtoFromOrder(order);
-            System.out.println(odto.toString());
+            System.out.println(odto);
+            
             
         } catch (BuildException | ServiceException e) {
             System.out.println(e.getMessage());
