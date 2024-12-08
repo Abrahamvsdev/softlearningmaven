@@ -134,7 +134,7 @@ public class OrderDetails {
     }
 
     //agregar metodo toString
-    public String toString() {
+    public String getDetailstoString() {
         return "OrderDetails{" +
                 "amount=" + amount +
                 ", detailRef='" + detailRef + '\'' +

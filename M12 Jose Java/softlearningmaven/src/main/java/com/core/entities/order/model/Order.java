@@ -79,7 +79,6 @@ public class Order extends Operation {
             // campos del grande dice jose que deberian ser mas de 3
             String shopCart,
             String paymentDate,
-            String orderPackage,
             double weight,
             double height,
             double width,
@@ -99,6 +98,12 @@ public class Order extends Operation {
         } catch (BuildException e) {
             throw new BuildException("Error en la operación(try operation): " + e.getMessage());
         }
+
+        try {
+            o.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
+        } catch (BuildException e) {
+            throw new BuildException("Error en las dimensiones(try dimensiones): " + e.getMessage());
+        }
         
         if (shopCart != null && !shopCart.isEmpty()) {
             if (o.setShopCartDetails(shopCart) != 0) {
@@ -112,20 +117,6 @@ public class Order extends Operation {
             }
         }
 
-        
-        if (orderPackage != null) {
-            try {
-                o.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
-            } catch (BuildException e) {
-                throw new BuildException("Error en las dimensiones(try dimensiones): " + e.getMessage());
-            }
-        }
-        
-        if (shopCart != null) {
-            if ((errorCode = o.setOrderPackage(orderPackage)) != 0) {
-                errors.append(Check.getErrorMessage(errorCode)).append("\n");
-            }
-        }
         if (deliveryDate != null) {
             if ((errorCode = o.setDeliveryDate(deliveryDate)) != 0) {
                 errors.append(Check.getErrorMessage(errorCode)).append("\n");
@@ -146,12 +137,21 @@ public class Order extends Operation {
     }
     // getter
 
-    public ArrayList<OrderDetails> getShopCart() {
-        return this.shopCart;
+    public String getShopCart() {
+        if (shopCart == null || shopCart.isEmpty()) {
+            return "El carrito está vacío";
+        }
+
+        String result = "";
+        for (OrderDetails detail : shopCart) {
+            result += detail.getDetailstoString() + "\n";
+        }
+    
+        return result;
     }
 
     public String getReceiverAddress() {
-        return receiverAddress;
+        return this.receiverAddress;
     }
 
     public String getReceiverPerson() {
@@ -531,7 +531,7 @@ public class Order extends Operation {
     public String getCompleteOrderDetails() {
 
         sb.setLength(0); // sb a 0 para que no se repitan ordenes anteriores
-        sb.append("Order Details: \n");
+        sb.append("Complete Order Details: \n");
         sb.append("Receiver Address: ").append(this.receiverAddress).append("\n");
         sb.append("Reference: ").append(this.ref).append("\n");
         sb.append("Receiver Person: ").append(this.receiverPerson).append("\n");
@@ -540,15 +540,17 @@ public class Order extends Operation {
         sb.append("Phone Contact: ").append(this.phoneContact).append("\n");
         sb.append("Init Date: ").append(this.initDate).append("\n");
         sb.append("Payment Date: ").append(this.paymentDate).append("\n");
+        sb.append("Dimensions: ").append(getOrderPackage().getDimensionstoString()).append("\n");
         sb.append("Delivery Date: ").append(this.getDeliveryDate()).append("\n");
         sb.append("Finish Date: ").append(getFinishDate()).append("\n");
         sb.append("Status: ").append(this.status).append("\n\n");
         sb.append("Shop Cart: \n");
-        for (OrderDetails detail : shopCart) {
-            sb.append("-----------------------------------------------------------------------------------").append("\n");
-            sb.append(detail.toString()).append("\n\n");
-        }
-        sb.append("==================").append("\n");
+        sb.append(getShopCart()).append("\n");
+        // for (OrderDetails detail : shopCart) {
+        //     sb.append("-----------------------------------------------------------------------------------").append("\n");
+        //     sb.append(detail.getDetailstoString()).append("\n\n");
+        // }
+        // sb.append("==================").append("\n");
         sb.append("Total Price: ").append(getPrice()).append("\n");
         return sb.toString();
     }

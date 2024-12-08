@@ -9,72 +9,47 @@ public class OrderMapper {
     public static Order orderFromDTO(OrderDTO odto) throws BuildException, ServiceException {
 
         Order order = Order.getInstance(
-                odto.getReceiverAddress(),
-                odto.getReceiverPerson(),
-                odto.getIdClient(),
-                odto.getPhoneContact(),
-                odto.getInitDate(),
-                odto.getFinishDate(),
-                0,
-                odto.getDescription(),
-                null,
-                null,
-                odto.getRef(),
-                0,
-                0,
-                false,
-                0,
-                null,
-                null);
+            odto.getReceiverAddress(),
+            odto.getReceiverPerson(),
+            odto.getIdClient(),
+            odto.getPhoneContact(),
+            odto.getInitDate(),
+            odto.getDescription(),
+            odto.getRef(),
+            odto.getShopCart(),
+            odto.getPaymentDate(),
+            odto.getWeight(),
+            odto.getHeight(),
+            odto.getWidth(),
+            odto.isFragile(),
+            odto.getLength(),
+            odto.getDeliveryDate(),
+            odto.getFinishDate()
+            );
+            
 
         return order;
     }
 
-    public static OrderDTO dtoFromOrder(Order order) {
-        String initDate = null;
-        if (order.getInitDate() != null) {
-            initDate = order.getInitDate().toString();
-        }
-
-        String finishDate = null;
-        if (order.getFinishDate() != null) {
-            finishDate = order.getFinishDate().toString();
-        }
-
-        String paymentDate = null;
-        if (order.getPaymentDate() != null) {
-            paymentDate = order.getPaymentDate().toString();
-        }
-
-        String deliveryDate = null;
-        if (order.getDeliveryDate() != null) {
-            deliveryDate = order.getDeliveryDate().toString();
-        }
-
-        String orderPackage = null;
-        if (order.getOrderPackage() != null) {
-            orderPackage = order.getOrderPackage().toString();
-        }
+    public static OrderDTO dtoFromOrder(Order ofromdto) {
 
         return new OrderDTO(
-                order.getRef(),
-                order.getDescription(),
-                initDate,
-                finishDate,
-                order.getReceiverAddress(),
-                order.getPhoneContact(),
-                order.getIdClient(),
-                order.getReceiverPerson(),
-                paymentDate,
-                deliveryDate,
-                0,
-                0,
-                0,
-                0,
-                false,
-                order.getOrderPackage().getLength(),
-                orderPackage,
-                order.getStatus(),
-                0.0);
+                ofromdto.getRef(),
+                ofromdto.getDescription(),
+                ofromdto.getInitDate().toString(),
+                ofromdto.getFinishDate().toString(),
+                ofromdto.getReceiverAddress(),
+                ofromdto.getPhoneContact(),
+                ofromdto.getIdClient(),
+                ofromdto.getReceiverPerson(),
+                ofromdto.getPaymentDate().toString(),
+                ofromdto.getDeliveryDate().toString(),
+                ofromdto.getOrderPackage().getHeight(),
+                ofromdto.getOrderPackage().getWidth(),
+                ofromdto.getOrderPackage().getWeight(),
+                ofromdto.getOrderPackage().getFragile(),
+                ofromdto.getOrderPackage().getLength(),
+                ofromdto.getOrderPackage().toString(),
+                ofromdto.getPrice());
     }
 }

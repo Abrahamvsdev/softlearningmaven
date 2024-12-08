@@ -20,7 +20,6 @@ public class TestOrderGrande {
                 1234,
                 "amount:2,ref:REF001,price:10.0,discount:5.0;amount:1,ref:REF002,price:20.0,discount:0.0",
                 "2023/11/02-10:00:10",
-                "h:202.20,w:202.20,W:202.20,f:true,d:202.20",
                 10.0,
                 5.0,
                 2.0,

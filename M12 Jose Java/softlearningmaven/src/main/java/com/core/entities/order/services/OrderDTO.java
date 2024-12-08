@@ -1,7 +1,5 @@
 package com.core.entities.order.services;
 
-import com.core.entities.order.model.OrderStatus;
-
 public class OrderDTO {
     private final int ref;
     private final String description;
@@ -16,18 +14,16 @@ public class OrderDTO {
     private final String deliveryDate;
     private final double height;
     private final double width;
-    private final double depth;
     private final double weight;
     private final boolean fragile;
     private final double length;
     private final String shopCart;
-    private final OrderStatus status; // Nuevo campo
     private final double totalPrice;
 
     public OrderDTO(int ref, String description, String initDate, String finishDate, String receiverAddress,
                     String phoneContact, String idClient, String receiverPerson, String paymentDate,
-                    String deliveryDate, double height, double width, double depth, double weight, boolean fragile,
-                    double length, String shopCart, OrderStatus status, double totalPrice) {
+                    String deliveryDate, double height, double width, double weight, boolean fragile,
+                    double length, String shopCart, double totalPrice) {
         this.ref = ref;
         this.description = description;
         this.initDate = initDate;
@@ -40,12 +36,10 @@ public class OrderDTO {
         this.deliveryDate = deliveryDate;
         this.height = height;
         this.width = width;
-        this.depth = depth;
         this.weight = weight;
         this.fragile = fragile;
         this.length = length;
         this.shopCart = shopCart;
-        this.status = status;
         this.totalPrice = totalPrice;
         
     }
@@ -99,10 +93,6 @@ public class OrderDTO {
         return width;
     }
 
-    public double getDepth() {
-        return depth;
-    }
-
     public double getWeight() {
         return weight;
     }
@@ -119,13 +109,8 @@ public class OrderDTO {
         return shopCart;
     }
 
-    public OrderStatus getStatus() {
-        return status;
-    }
-
     public double getTotalPrice() {
         return totalPrice;
     }
 
-  
 }

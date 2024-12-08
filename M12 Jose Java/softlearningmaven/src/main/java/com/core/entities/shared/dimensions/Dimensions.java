@@ -73,7 +73,7 @@ public class Dimensions {
     }
 
     
-    public String toString() {
+    public String getDimensionstoString() {
         return "Height: " + this.getHeight() + " cm\n" +
                 "Weight: " + this.getWeight() + " kg\n" +
                 "Width: " + this.getWidth() + " cm\n" +
