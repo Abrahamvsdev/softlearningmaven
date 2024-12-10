@@ -11,22 +11,23 @@ public class TestOrderGrande {
         // acciones que nos deben retornar algun error
         try {
             Order order = Order.getInstance(
+                
+                1234,
+                "description",
+                "2023/11/02-10:00:10",
                 "calle falsa 123",
                 "Pedro Medario",
-                "ID1234",
                 "123456789",
+                "ID1234",
+                "2024/11/02-10:00:10",
                 "2023/11/02-10:00:10",
-                "description",
-                1234,
-                "amount:2,ref:REF001,price:10.0,discount:5.0;amount:1,ref:REF002,price:20.0,discount:0.0",
-                "2023/11/02-10:00:10",
+                "2024/11/02-10:00:10",
+                11.0,
                 10.0,
-                5.0,
-                2.0,
+                10.0,
                 true,
-                3.0,
-                "2024/11/02-09:00:10",
-                "2024/11/02-10:00:10");
+                10.0,
+                "amount:2,ref:REF001,price:10.0,discount:5.0;amount:1,ref:REF002,price:20.0,discount:0.0");
             System.out.println(order.getCompleteOrderDetails());
             
         } catch (BuildException | ServiceException e) {

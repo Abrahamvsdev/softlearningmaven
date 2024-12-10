@@ -8,23 +8,35 @@ import com.core.entities.exceptions.BuildException;
 
 public abstract class Operation {
 
-    protected LocalDateTime initDate = null, finishDate = null; // Fecha de la operacion
+    protected LocalDateTime initDate, finishDate; // Fecha de la operacion
     protected String description; // Descripcion de la operacion, no de la compra
-    protected int ref; // Referencia de la operacion, Un numero que clasifique la operacion
+    protected int reference; // Referencia de la operacion, Un numero que clasifique la operacion
     protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd-HH:mm:ss");
 
     protected Operation() {
     };// Constructor vacio;
 
-    public void operation(String initDate, String finishDate, String description, int ref) throws BuildException {
+    public void operation(
+        int reference,
+        String description, 
+        String initDate, 
+        String finishDate
+        ) throws BuildException {
         StringBuilder errors = new StringBuilder();
         int errorCode;
 
-        if (initDate != null) {
+        if ((errorCode = this.setRef(reference)) != 0) {
+            errors.append(Check.getErrorMessage(errorCode)).append("\n");
+        }
+        
+        this.setDescription(description);// No se valida porque no tiene restricciones, hacer cositas con los insultos y
+                                         // palabras malsonantes
+        
+        
             if ((errorCode = this.setInitDate(initDate)) != 0) {
                 errors.append(Check.getErrorMessage(errorCode)).append("\n");
             }
-        }
+        
 
         if (finishDate != null) {
             if ((errorCode = this.setFinishDate(finishDate)) != 0) {
@@ -32,12 +44,7 @@ public abstract class Operation {
             }
         }
 
-        this.setDescription(description);// No se valida porque no tiene restricciones, hacer cositas con los insultos y
-                                         // palabras malsonantes
 
-        if ((errorCode = this.setRef(ref)) != 0) {
-            errors.append(Check.getErrorMessage(errorCode)).append("\n");
-        }
 
         if (errors.length() > 0) {
             throw new BuildException("No es posible crear la operaciónORDERDENTRO: \n" + errors.toString());
@@ -46,12 +53,18 @@ public abstract class Operation {
     }
 
     // getter
-    public LocalDateTime getInitDate() {
-        return initDate;
+    public String getInitDate() {
+        if(this.initDate != null){
+            return this.initDate.format(formatter);
+        }
+        return "";
     }
 
-    public LocalDateTime getFinishDate() {
-        return finishDate;
+    public String getFinishDate() {
+        if(this.finishDate !=null){
+            return this.finishDate.format(formatter);
+        }
+        return "";
     }
 
     public String getDescription() {
@@ -59,7 +72,7 @@ public abstract class Operation {
     }
 
     public int getRef() {
-        return ref;
+        return reference;
     }
 
     // setter
@@ -97,7 +110,7 @@ public abstract class Operation {
             return -15;
         }
         if (ref > 1000 && ref < 10000) {
-            this.ref = ref;
+            this.reference = ref;
         }
         return 0;
     }

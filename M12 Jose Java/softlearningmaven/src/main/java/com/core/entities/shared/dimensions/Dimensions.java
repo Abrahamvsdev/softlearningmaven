@@ -12,12 +12,16 @@ public class Dimensions {
     protected double length = 0.0;
     protected double volume = 0.0;
 
-    protected Dimensions() {
+    public Dimensions() {
 
     };
 
-    public static Dimensions getInstanceDimensions(double weight, double height, double width, boolean fragile,
-            double length) throws BuildException {
+    public static Dimensions getInstanceDimensions(
+        double weight, 
+        double height, 
+        double width, 
+        boolean fragile,
+        double length) throws BuildException {
         StringBuilder errors = new StringBuilder();
 
         Dimensions d = new Dimensions();

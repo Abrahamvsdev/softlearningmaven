@@ -1,12 +1,11 @@
 package com.core.entities.order.services;
 
 public class OrderDTO {
-    private final int ref;
+    private final int reference;
     private final String description;
     private final String initDate;
     private final String finishDate;
     private final String receiverAddress;
-    @SuppressWarnings("FieldMayBeFinal")
     private String phoneContact;
     private final String idClient;
     private final String receiverPerson;
@@ -18,35 +17,50 @@ public class OrderDTO {
     private final boolean fragile;
     private final double length;
     private final String shopCart;
-    private final double totalPrice;
 
-    public OrderDTO(int ref, String description, String initDate, String finishDate, String receiverAddress,
-                    String phoneContact, String idClient, String receiverPerson, String paymentDate,
-                    String deliveryDate, double height, double width, double weight, boolean fragile,
-                    double length, String shopCart, double totalPrice) {
-        this.ref = ref;
+
+    public OrderDTO(
+        int reference, 
+        String description, 
+        String initDate, 
+        String receiverAddress,
+        String phoneContact, 
+        String idClient, 
+        String receiverPerson, 
+        String paymentDate,
+        String deliveryDate, 
+        String finishDate, 
+        double height, 
+        double width, 
+        double weight, 
+        boolean fragile,
+        double length, 
+        String shopCart 
+        ) {
+            
+        this.reference = reference;
         this.description = description;
         this.initDate = initDate;
-        this.finishDate = finishDate;
         this.receiverAddress = receiverAddress;
         this.phoneContact = phoneContact;
         this.idClient = idClient;
         this.receiverPerson = receiverPerson;
         this.paymentDate = paymentDate;
         this.deliveryDate = deliveryDate;
+        this.finishDate = finishDate;
         this.height = height;
         this.width = width;
         this.weight = weight;
         this.fragile = fragile;
         this.length = length;
         this.shopCart = shopCart;
-        this.totalPrice = totalPrice;
+        
         
     }
 
     // Getters
     public int getRef() {
-        return ref;
+        return reference;
     }
 
     public String getDescription() {
@@ -109,8 +123,8 @@ public class OrderDTO {
         return shopCart;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
+    // public double getTotalPrice() {
+    //     return totalPrice;
+    // }
 
 }

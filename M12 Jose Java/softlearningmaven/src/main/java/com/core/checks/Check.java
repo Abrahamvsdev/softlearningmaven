@@ -283,7 +283,7 @@ public static int isValidDateComplete(String date) {
     public static int checkMobilePhone(String n){
         //esta funcion comprueba si el string es un numero valido de 9 cifras
         if (Check.isNull(n) == 0) {
-            if (n.length() != 9) {
+            if (n.length() >9 ) {
                 return -17;
             }
         }

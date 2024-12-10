@@ -3,5 +3,6 @@
         "propio"
     ],
     "CodeGPT.apiKey": "CodeGPT Plus Beta",
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "java.debug.settings.showHex": true
 }

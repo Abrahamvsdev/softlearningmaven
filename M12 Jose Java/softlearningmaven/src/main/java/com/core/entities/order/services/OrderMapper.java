@@ -9,25 +9,23 @@ public class OrderMapper {
     public static Order orderFromDTO(OrderDTO odto) throws BuildException, ServiceException {
 
         Order order = Order.getInstance(
+            odto.getRef(),
+            odto.getDescription(),
+            odto.getInitDate(),
             odto.getReceiverAddress(),
             odto.getReceiverPerson(),
-            odto.getIdClient(),
             odto.getPhoneContact(),
-            odto.getInitDate(),
-            odto.getDescription(),
-            odto.getRef(),
-            odto.getShopCart(),
+            odto.getIdClient(),
             odto.getPaymentDate(),
-            odto.getWeight(),
+            odto.getDeliveryDate(),
+            odto.getFinishDate(),
             odto.getHeight(),
+            odto.getWeight(),
             odto.getWidth(),
             odto.isFragile(),
             odto.getLength(),
-            odto.getDeliveryDate(),
-            odto.getFinishDate()
+            odto.getShopCart()
             );
-            
-
         return order;
     }
 
@@ -36,20 +34,20 @@ public class OrderMapper {
         return new OrderDTO(
                 ofromdto.getRef(),
                 ofromdto.getDescription(),
-                ofromdto.getInitDate().toString(),
-                ofromdto.getFinishDate().toString(),
+                ofromdto.getInitDate(),
                 ofromdto.getReceiverAddress(),
                 ofromdto.getPhoneContact(),
                 ofromdto.getIdClient(),
                 ofromdto.getReceiverPerson(),
                 ofromdto.getPaymentDate().toString(),
                 ofromdto.getDeliveryDate().toString(),
+                ofromdto.getFinishDate(),
                 ofromdto.getOrderPackage().getHeight(),
                 ofromdto.getOrderPackage().getWidth(),
                 ofromdto.getOrderPackage().getWeight(),
                 ofromdto.getOrderPackage().getFragile(),
                 ofromdto.getOrderPackage().getLength(),
-                ofromdto.getOrderPackage().toString(),
-                ofromdto.getPrice());
+                ofromdto.getShopCart()
+                );
     }
 }

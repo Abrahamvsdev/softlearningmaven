@@ -1,5 +1,6 @@
 package com.core.entities.order.model;
 
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -69,32 +70,37 @@ public class Order extends Operation {
     // ESTE ES EL GET INSTANCE GRANDE
     public static Order getInstance(
             // campos del pequeño
+            int reference,
+            String description,
+            String initDate,
             String receiverAddress,
             String receiverPerson,
-            String idClient,
             String phoneContact,
-            String initDate,
-            String description,
-            int ref,
+            String idClient,
             // campos del grande dice jose que deberian ser mas de 3
-            String shopCart,
             String paymentDate,
-            double weight,
+            String deliveryDate,
+            String finishDate,
             double height,
             double width,
+            double weight,
             boolean fragile,
             double length,
-            String deliveryDate,
-            String finishDate) throws BuildException, ServiceException {
+            String shopCart) throws BuildException, ServiceException {
         StringBuilder errors = new StringBuilder();
         int errorCode;
         
 
-        Order o = getInstance(receiverAddress, receiverPerson, idClient, phoneContact);
+        Order o = new Order();
         // los otros campos que se validan aqui
 
         try {
-            o.operation( initDate,null, description, ref);
+            o.operation(
+                reference,
+                description,
+                initDate,
+                null
+            );
         } catch (BuildException e) {
             throw new BuildException("Error en la operación(try operation): " + e.getMessage());
         }
@@ -286,17 +292,12 @@ public class Order extends Operation {
             // se prueban las dimensions para ver si se pueden crear, si no, que pete
             try {
                 this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
+                this.status = OrderStatus.FORTHCOMMING;
             } catch (BuildException e) {
                 throw new BuildException("Error en las dimensiones: " + e.getMessage());
-
             }
-            this.orderPackage = Dimensions.getInstanceDimensions(weight, height, width, fragile, length);
-                this.status = OrderStatus.FORTHCOMMING;
-                
         }
-
         return 0;
-
     }
     throw new BuildException("No se puede añadir un paquete a una orden no pagada set order package");
 }
@@ -524,7 +525,7 @@ public class Order extends Operation {
         sb.append("Init Date: ").append(this.initDate).append("\n");
         sb.append("Finish Date: ").append(this.finishDate).append("\n");
         sb.append("Description: ").append(this.description).append("\n");
-        sb.append("Reference: ").append(this.ref).append("\n");
+        sb.append("Reference: ").append(this.reference).append("\n");
         return sb.toString();
     }
 
@@ -533,17 +534,17 @@ public class Order extends Operation {
         sb.setLength(0); // sb a 0 para que no se repitan ordenes anteriores
         sb.append("Complete Order Details: \n");
         sb.append("Receiver Address: ").append(this.receiverAddress).append("\n");
-        sb.append("Reference: ").append(this.ref).append("\n");
+        sb.append("Reference: ").append(this.reference).append("\n");
         sb.append("Receiver Person: ").append(this.receiverPerson).append("\n");
-        sb.append("ID Client: ").append(this.idClient).append("\n");
+        sb.append("ID Client: ").append(getIdClient()).append("\n");
         sb.append("Description: ").append(this.description).append("\n");
-        sb.append("Phone Contact: ").append(this.phoneContact).append("\n");
-        sb.append("Init Date: ").append(this.initDate).append("\n");
-        sb.append("Payment Date: ").append(this.paymentDate).append("\n");
+        sb.append("Phone Contact: ").append(getPhoneContact()).append("\n");
+        sb.append("Init Date: ").append(this.getInitDate()).append("\n");
+        sb.append("Payment Date: ").append(this.getPaymentDate()).append("\n");
         sb.append("Dimensions: ").append(getOrderPackage().getDimensionstoString()).append("\n");
         sb.append("Delivery Date: ").append(this.getDeliveryDate()).append("\n");
         sb.append("Finish Date: ").append(getFinishDate()).append("\n");
-        sb.append("Status: ").append(this.status).append("\n\n");
+        sb.append("Status: ").append(this.getStatus()).append("\n\n");
         sb.append("Shop Cart: \n");
         sb.append(getShopCart()).append("\n");
         // for (OrderDetails detail : shopCart) {
