@@ -6,7 +6,7 @@ public class OrderDTO {
     private final String initDate;
     private final String finishDate;
     private final String receiverAddress;
-    private String phoneContact;
+    private       String phoneContact;
     private final String idClient;
     private final String receiverPerson;
     private final String paymentDate;
