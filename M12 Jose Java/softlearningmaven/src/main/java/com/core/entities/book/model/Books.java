@@ -26,8 +26,25 @@ public class Books extends Product implements Storable {
     
     }
     
-    public static Books getInstance(String ident, double price,boolean delayPay, double discount, String type, String payMethod, String date, String author, String isbn, String cover, int page, 
-        String genre, String editorial, double weight, double height, double width, boolean fragile, double length) throws Exception {
+    public static Books getInstance(
+        String ident, 
+        double price,
+        boolean delayPay, 
+        double discount, 
+        String type, 
+        String payMethod, 
+        String date, 
+        String author, 
+        String isbn, 
+        String cover, 
+        int page, 
+        String genre, 
+        String editorial, 
+        double weight, 
+        double height, 
+        double width, 
+        boolean fragile, 
+        double length) throws Exception {
         
         StringBuilder errors = new StringBuilder();
         int errorCode;

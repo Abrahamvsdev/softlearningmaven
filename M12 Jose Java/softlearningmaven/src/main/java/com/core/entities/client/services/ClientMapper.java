@@ -13,11 +13,9 @@ public class ClientMapper {
                                     cdto.getAddress(), 
                                     cdto.getDni(), 
                                     cdto.getNumber(), 
-                                    cdto.getAntiquity(), 
-                                    cdto.getPaymentMode(), 
+                                    cdto.getPaymentMode(), cdto.getAntiquity(), 
                                     cdto.getMembershipLevel(), 
-                                    cdto.getRegistrationDate()
-        );
+                                    cdto.getRegistrationDate());
     }    
 
     public static ClientDTO dtoFromClient(Client c){

@@ -17,11 +17,9 @@ public class Client extends Person {
         
     }
 
-    public static Client getInstance(String name, String surname, String email, String address, String dni, String number, int antiquity,
-                                        String paymentMode, String membershipLevel, String registrationDate) throws Exception {
+    public static Client getInstance(String name, String surname, String email, String address, String dni, String number, String paymentMode, int antiquity, String membershipLevel, String registrationDate) throws Exception {
         Client client = new Client();
 
-        
         StringBuilder errors = new StringBuilder();
         int errorCode;
 
