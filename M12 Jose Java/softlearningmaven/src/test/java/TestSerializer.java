@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TestSerializer {
     public static void main(String[] args) throws Exception, BuildException, ServiceException {
         //ejemplo de serializacion
-        System.out.println("Hello world!");
+        
         BooksDTO b = new BooksDTO(
             "1234",
             10.0,

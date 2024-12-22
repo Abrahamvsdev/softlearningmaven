@@ -1,16 +1,11 @@
 package com.core.appservices.serializers;
 
 import java.util.TreeMap;
-import com.core.appservices.serializers.Serializer;
 
 import com.core.entities.book.services.EspanolBookDTO;
 import com.core.entities.book.services.JapaneseBookDTO;
 import com.core.entities.client.services.EspanolClientDTO;
 import com.core.entities.client.services.JapaneseClientDTO;
-// import com.core.entities.courses.services.EspanolCoursesDTO;
-// import com.core.entities.courses.services.JapaneseCoursesDTO;
-// import com.core.entities.employee.services.EspanolEmployeeDTO;
-// import com.core.entities.employee.services.JapaneseEmployeeDTO;
 import com.core.entities.order.services.JapaneseOrderDTO;
 
 public class SerializersCatalog {
