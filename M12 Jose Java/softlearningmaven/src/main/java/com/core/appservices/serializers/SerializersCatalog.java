@@ -55,7 +55,7 @@ public class SerializersCatalog {
         // catalog.put(Serializers.JSON_CAST_EMPLOYEE, new JacksonSerializer<EspanolaEmployeeDTO>());
         // catalog.put(Serializers.XML_CAST_EMPLOYEE, new JacksonXmlSerializer<EspanolEmployeeDTO>());
     }
-    public static Serializer getInstace(Serializers type){
+    public static Serializer getInstance(Serializers type){
         if(catalog.isEmpty()){
             loadCatalog();
         }
