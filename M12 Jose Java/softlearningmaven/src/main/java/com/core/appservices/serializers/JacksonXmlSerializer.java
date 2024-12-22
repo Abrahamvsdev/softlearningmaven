@@ -15,7 +15,7 @@ public class JacksonXmlSerializer<T> implements Serializer<T> {
         }
     }
 
-    public T desearialize(String source, Class<T> object)throws ServiceException{
+    public T deserialize(String source, Class<T> object)throws ServiceException{
         try {
             return mapper.readValue(source, object);
         } catch (JsonProcessingException e) {
