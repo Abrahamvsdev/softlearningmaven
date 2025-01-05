@@ -10,12 +10,24 @@ public class ClientTest {
         
         Client c;
         try{
-            c=Client.getInstance("Jose", "Perez", "email@gmail.com", "Calle falsa 123", "12345678A", "123456789", "Targeta", 12, "asd", "Premium");
-            System.out.println(c.getDetails());
+            c=Client.getInstance(
+            "Jose", 
+            "Perez", 
+            "email@gmail.com", 
+            "Calle falsa 123", 
+            "12345678A", 
+            "123456789", 
+            "Targeta", 
+            12, 
+            "asd", 
+            "02-03-1990");
+            //System.out.println(c.getDetails());
 
             //Mapper
             ClientDTO cdto = ClientMapper.dtoFromClient(c);
-            System.out.println("Adreça del client: " + cdto.getAddress());
+            System.out.println("Client number : " + cdto.getNumber());
+
+            System.out.println("------------------------");
 
             Client ccopy = ClientMapper.clientFromDTO(cdto);
             System.out.println("Mapper Client: " + ccopy.getDetails());
@@ -23,9 +35,6 @@ public class ClientTest {
         }catch(BuildException e){
             System.out.println(e.toString());
         }
-
-        
-        
     }
 }
 
