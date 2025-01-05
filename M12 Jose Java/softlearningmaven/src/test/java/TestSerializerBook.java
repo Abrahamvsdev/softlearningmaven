@@ -2,7 +2,6 @@
 import com.core.appservices.serializers.Serializer;
 import com.core.appservices.serializers.Serializers;
 import com.core.appservices.serializers.SerializersCatalog;
-import com.core.entities.book.services.EspanolBookDTO;
 import com.core.entities.book.services.JapaneseBookDTO;
 
 
@@ -29,11 +28,29 @@ public class TestSerializerBook {
                     // this.fragile = fragile;
                     // this.length = length;
                     // this.volume = volume;
-        JapaneseBookDTO japaneseBookTest = new JapaneseBookDTO( "ident", 50.0, true, 0.0, "type", "payMethod", "2023/11/02-10:00)", "author", "isbn", "cover", 10, "genre", "editorial", 10.0, 10.0, 10.0, true, 10.0, 10.0);
-        EspanolBookDTO espanolBookTest = new EspanolBookDTO( "ident", 50.0, true, 0.0, "type", "payMethod", "2023/11/02-10:00)", "author", "isbn", "cover", 10, "genre", "editorial", 10.0, 10.0, 10.0, true, 10.0, 10.0);
+        JapaneseBookDTO japaneseBookTest = new JapaneseBookDTO( 
+            "ident", 
+            50.0, 
+            true, 
+            0.0, 
+            "type", 
+            "payMethod", 
+            "2023/11/02-10:00:01", 
+            "author", 
+            "isbn", 
+            "cover", 
+            1001, 
+            "genre", 
+            "editorial", 
+            10.0,
+            10.0, 
+            10.0, 
+            true, 
+            10.0, 
+            10.0);
         try {
             System.out.println("JapaneseBookDTO Serializer: \n");
-            Serializer formatter = SerializersCatalog.getInstance(Serializers.JSON_BOOK);
+            Serializer<JapaneseBookDTO> formatter = SerializersCatalog.getInstance(Serializers.JSON_BOOK);
             String json = formatter.serialize(japaneseBookTest);
             System.out.println(json);
             System.out.println("\n JapaneseBookDTO Deserializer: \n");

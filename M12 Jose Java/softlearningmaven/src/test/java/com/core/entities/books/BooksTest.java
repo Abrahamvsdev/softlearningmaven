@@ -14,13 +14,13 @@ public class BooksTest {
         b = Books.getInstance(
             "1234",
             10.0,
-            true,
+            false,
             0.0,
             "type",
-            "payMethod",
-            "2023/11/02-10:00:10",
+            "true",
+            "02-11-2023",
             "author",
-            "isbn",
+            "1234567891234",
             "cover",
             10,
             "genre",
@@ -28,7 +28,7 @@ public class BooksTest {
             10.0,
             10.0,
             10.0,
-            true,
+            false,
             10.0
         );
         System.out.println(b.getDetails());
