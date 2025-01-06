@@ -13,24 +13,24 @@ public class TestSerializerClient {
                     
         JapaneseClientDTO japaneseClientTest = new JapaneseClientDTO(
             "Pedro", 
-            "surname", 
+            "Medario", 
             "email@email.com", 
             "address", 
-            "123456789", 
-            "123456789", 
-            12, //TODO voy por aqui, me he equedado cambiendo este corta y pega para adaptarlo al client
-            , 
-            membershipLevel, 
-            registrationDate);
+            "123456789G", 
+            "890300499",
+            12, 
+            "Credit Card", 
+            "asd", 
+            "02-03-1990");
         try {
-            System.out.println("JapaneseBookDTO Serializer: \n");
-            Serializer<JapaneseBookDTO> formatter = SerializersCatalog.getInstance(Serializers.JSON_BOOK);
-            String json = formatter.serialize(japaneseBookTest);
+            System.out.println("JapaneseClientDTO Serializer: \n");
+            Serializer<JapaneseClientDTO> formatter = SerializersCatalog.getInstance(Serializers.JSON_CLIENT);
+            String json = formatter.serialize(japaneseClientTest);
             System.out.println(json);
 
-            System.out.println("\n JapaneseBookDTO Deserializer: \n");
-            JapaneseBookDTO japaneseBookDeserialized =(JapaneseBookDTO) formatter.deserialize(json, JapaneseBookDTO.class);
-            System.out.println(japaneseBookDeserialized);
+            System.out.println("\n JapaneseClientDTO Deserializer: \n");
+            JapaneseClientDTO japaneseClientDeserialized =(JapaneseClientDTO) formatter.deserialize(json, JapaneseClientDTO.class);
+            System.out.println(japaneseClientDeserialized);
             System.out.println("------------------------\n");
             
         } catch (Exception e) {
